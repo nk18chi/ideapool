@@ -1,38 +1,67 @@
 .App {
+  margin: 0 auto;
   text-align: center;
+  margin-top: 40px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+h1 {
+  font-size: 40px;
+  margin: 24px 0;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+h2 {
+  font-size: 36px;
+  margin: 16px 0;
+  font-weight: normal;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.slot-words {
+  overflow: hidden;
+  margin: 0 auto;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  border: 1px solid #ddd;
+  width: 760px;
 }
 
-.App-link {
-  color: #61dafb;
+.slot-words li {
+  float: left;
+  width: 30%;
+  font-size: 24px;
+  line-height: 60px;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.slot-words .middle-li {
+  width: 2.4% !important;
+  margin-right: 2.4%;
+  position: relative;
+  left: 5.5px;
+}
+
+.right-border {
+  border-right: 1px solid #ddd;
+}
+
+.right-border::after {
+  content: "✖️";
+  position: relative;
+  left: 6.5px;
+}
+
+.description {
+  margin: 4px;
+}
+
+.description svg {
+  font-size: 24px;
+  position: relative;
+  top: 4px;
+}
+
+footer {
+  background-color: #333;
+  color: #f1f1f1;
+  padding: 8px;
+  font-size: 13px;
+  margin-top: 80px;
 }

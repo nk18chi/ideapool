@@ -1,24 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { Button } from "@material-ui/core/";
+import { Language, PhoneIphone, Phone, MusicNote } from "@material-ui/icons/";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className='App'>
+      <header>
+        <h1>Idea Bank</h1>
       </header>
+      <article>
+        <h2>Let's think creatively!</h2>
+        <p className='description'>Come up with a new idea by combining the following three words.</p>
+        <p className='description'>
+          ex.)　
+          <Phone /> Telephone　✖️　
+          <MusicNote /> Music　✖️　
+          <Language /> Internet　=　
+          <PhoneIphone /> iPhone
+        </p>
+        <ul className='slot-words'>
+          <li>Telephone</li>
+          <li className='right-border middle-li'></li>
+          <li>Music</li>
+          <li className='right-border middle-li'></li>
+          <li>Internet</li>
+        </ul>
+        <Button variant='contained' color='primary'>
+          Shuffle
+        </Button>
+      </article>
+      <footer>2020 © ideabank.com All Rights Reserved.</footer>
     </div>
   );
 }
