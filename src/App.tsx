@@ -93,7 +93,7 @@ const App: React.FC = () => {
           Shuffle
         </Button>
       </article>
-      <footer>2020 © **** All Rights Reserved.</footer>
+      <footer>2020 © ideabank-1887f.web.app All Rights Reserved.</footer>
     </div>
   );
 };
