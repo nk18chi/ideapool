@@ -31,18 +31,17 @@ h2 {
 }
 
 .slot-word-li {
-  border-bottom: 4px solid #3978ef;
+  background-color: #fae7cb;
+  border-radius: 8px;
+  color: #484848;
 }
 
 .slot-words p {
-  padding: 25px 0 8px;
+  padding: 20px 0;
 }
 
 .slot-words .middle-li {
-  width: 2.4% !important;
-  margin-right: 2.4%;
-  position: relative;
-  left: 5.5px;
+  width: 5% !important;
 }
 .description {
   margin: 4px;

@@ -43,7 +43,6 @@ const App: React.FC = () => {
       setTimeout(() => {
         ref.current.style.transitionDuration = "0s";
         ref.current.style.transform = "translateY(100%)";
-        ref.current.style.opacity = 0;
 
         setTimeout(() => {
           ref.current.style.transitionDuration = "0.3s";
@@ -89,7 +88,7 @@ const App: React.FC = () => {
               </Fragment>
             ))}
         </ul>
-        <Button variant='contained' color='primary' onClick={resetWords}>
+        <Button className='shuffle-btn' variant='contained' color='primary' onClick={resetWords}>
           Shuffle
         </Button>
       </article>
