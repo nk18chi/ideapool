@@ -20,7 +20,6 @@ h2 {
   margin: 0 auto;
   margin-top: 40px;
   margin-bottom: 40px;
-  border: 1px solid #ddd;
   width: 760px;
 }
 
@@ -28,7 +27,15 @@ h2 {
   float: left;
   width: 30%;
   font-size: 24px;
-  line-height: 60px;
+  overflow: hidden;
+}
+
+.slot-word-li {
+  border-bottom: 4px solid #3978ef;
+}
+
+.slot-words p {
+  padding: 25px 0 8px;
 }
 
 .slot-words .middle-li {
@@ -37,17 +44,6 @@ h2 {
   position: relative;
   left: 5.5px;
 }
-
-.right-border {
-  border-right: 1px solid #ddd;
-}
-
-.right-border::after {
-  content: "✖️";
-  position: relative;
-  left: 6.5px;
-}
-
 .description {
   margin: 4px;
 }
