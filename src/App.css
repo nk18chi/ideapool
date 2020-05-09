@@ -6,13 +6,15 @@
 
 h1 {
   font-size: 40px;
-  margin: 24px 0;
+  margin: 24px 0 12px;
 }
 
 h2 {
   font-size: 36px;
-  margin: 16px 0;
+  margin: 8px 0;
   font-weight: normal;
+  display: inline-block;
+  border-right: 2px solid #fff;
 }
 
 .slot-words {
@@ -45,6 +47,9 @@ h2 {
 }
 .description {
   margin: 4px;
+  font-size: 17px;
+  display: inline-block;
+  border-right: 2px solid #fff;
 }
 
 .description svg {

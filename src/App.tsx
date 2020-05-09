@@ -1,23 +1,75 @@
 import React, { Fragment } from "react";
 import "./App.css";
 import { Button } from "@material-ui/core/";
-import { Language, PhoneIphone, Phone, MusicNote } from "@material-ui/icons/";
-
-var seenWords: Set<number> = new Set();
-const words: string[] = ["Telphone", "Music", "Internet", "AI", "Book", "Fashion", "Social Network", "Delivery", "Taxi", "Software Enginner"];
-
-function getWord(): string {
-  var i: number = Math.floor(Math.random() * words.length);
-  while (seenWords.has(i)) {
-    i = Math.floor(Math.random() * words.length);
-  }
-  seenWords.add(i);
-  return words[i];
-}
 
 const App: React.FC = () => {
+  var seenWords: Set<number> = new Set();
+  const words: string[] = ["Telphone", "Music", "Internet", "AI", "Book", "Fashion", "Social Network", "Delivery", "Taxi", "Software Enginner"];
   const [threeWords, setThreeWords] = React.useState<string[]>([getWord(), getWord(), getWord()]);
-  const wordRefs = React.useRef<any>([React.createRef(), React.createRef(), React.createRef()]);
+  const wordRefs = React.useRef<any>([React.useRef(), React.useRef(), React.useRef()]);
+
+  const typingIntervalRef = React.useRef<any>();
+  const cursorIntervalRef = React.useRef<any>();
+  const [typingRefs, settypingRefs] = React.useState<any[]>([React.useRef(), React.useRef(), React.useRef()]);
+  const [typingTextArr, settypingTextArr] = React.useState<string[]>(["", "", ""]);
+  const [index, setIndex] = React.useState(0);
+  const [count, setCount] = React.useState(0);
+  const [isCursor, setIsCursor] = React.useState(true);
+
+  const typingTextData = [
+    "Let's think creatively!",
+    "Come up with a new idea by combining the following three words.",
+    "ex.) 📞Telephone　✖️ 🎵Music　✖️ 🌍Internet　= 📱iPhone",
+  ];
+
+  React.useEffect(() => {
+    if (isCursor) {
+      cursorIntervalRef.current = setInterval(() => {
+        let newRefs = typingRefs;
+        let curColor = newRefs[count].current.style.borderColor;
+        newRefs[count].current.style.borderColor = curColor === "black" ? "white" : "black";
+        settypingRefs(newRefs);
+      }, 200);
+    }
+    return () => {
+      clearInterval(cursorIntervalRef.current);
+    };
+  }, [count, isCursor, typingRefs]);
+
+  React.useEffect(() => {
+    typingIntervalRef.current = settypingTextArr(typingTextArr);
+  }, [typingTextArr]);
+
+  React.useEffect(() => {
+    if (count < typingTextData.length) {
+      if (index < typingTextData[count].length) {
+        typingIntervalRef.current = setInterval(() => {
+          let newTextArr: string[] = typingTextArr;
+          newTextArr[count] += typingTextData[count][index];
+          settypingTextArr(newTextArr);
+          setIndex(index + 1);
+        }, 40);
+      } else {
+        setIndex(0);
+        typingRefs[count].current.style.borderColor = "white";
+        setCount(count + 1);
+      }
+    } else {
+      setIsCursor(false);
+    }
+    return () => {
+      clearInterval(typingIntervalRef.current);
+    };
+  }, [count, index, typingRefs, typingTextArr, typingTextData]);
+
+  function getWord(): string {
+    var i: number = Math.floor(Math.random() * words.length);
+    while (seenWords.has(i)) {
+      i = Math.floor(Math.random() * words.length);
+    }
+    seenWords.add(i);
+    return words[i];
+  }
 
   function resetWords(e: any) {
     Promise.all(
@@ -64,15 +116,17 @@ const App: React.FC = () => {
         <h1>Idea Bank</h1>
       </header>
       <article>
-        <h2>Let's think creatively!</h2>
-        <p className='description'>Come up with a new idea by combining the following three words.</p>
-        <p className='description'>
-          ex.)　
-          <Phone /> Telephone　✖️　
-          <MusicNote /> Music　✖️　
-          <Language /> Internet　=　
-          <PhoneIphone /> iPhone
-        </p>
+        {typingTextArr.map((t: string, i: number) => (
+          <div key={i}>
+            {i === 0 ? (
+              <h2 ref={typingRefs[i]}>{t}</h2>
+            ) : (
+              <p ref={typingRefs[i]} className='description'>
+                {t}
+              </p>
+            )}
+          </div>
+        ))}
         <ul className='slot-words'>
           {threeWords.length > 0 &&
             threeWords.map((word: string, i: number) => (
