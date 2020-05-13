@@ -80,6 +80,11 @@ h2 {
   top: 4px;
 }
 
+.shuffle-btn {
+  font-size: 20px !important;
+  border-radius: 20px !important;
+}
+
 footer {
   background-color: #333;
   color: #f1f1f1;

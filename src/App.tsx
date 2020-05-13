@@ -2,6 +2,7 @@ import React, { Fragment } from "react";
 import "./App.css";
 import { Button, Switch } from "@material-ui/core/";
 import { words } from "./model/words";
+import { Shuffle } from "@material-ui/icons/";
 
 var seenWords: Set<string> = new Set();
 const initialWords = [getWord(), getWord(), getWord()];
@@ -192,7 +193,15 @@ const App: React.FC = () => {
             </Fragment>
           ))}
         </ul>
-        <Button className='shuffle-btn' variant='contained' color='primary' onClick={resetWords} disabled={!isShuffleBtn}>
+        <Button
+          className='shuffle-btn'
+          variant='contained'
+          color='primary'
+          size='large'
+          onClick={resetWords}
+          disabled={!isShuffleBtn}
+          startIcon={<Shuffle />}
+        >
           Shuffle
         </Button>
       </article>
