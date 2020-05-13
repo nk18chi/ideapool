@@ -144,6 +144,14 @@ a {
 /* ---------- reset css end  ----------  */
 
 #root {
-  border-top: 8px solid #0180cb;
+  border-top: 8px solid #ffd31d;
   color: #484848;
+}
+
+.shuffle-btn {
+  background-color: #ffd31d !important;
+}
+
+.white {
+  color: #fff;
 }
