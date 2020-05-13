@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
 import "./App.css";
-import { Button } from "@material-ui/core/";
+import { Button, Switch } from "@material-ui/core/";
 
 const App: React.FC = () => {
-  var seenWords: Set<number> = new Set();
+  var seenWords: Set<string> = new Set();
   const words: string[] = [
     "Telephone",
     "Movie",
@@ -176,6 +176,7 @@ const App: React.FC = () => {
   ];
   const [threeWords, setThreeWords] = React.useState<string[]>([getWord(), getWord(), getWord()]);
   const wordRefs = React.useRef<any>([React.useRef(), React.useRef(), React.useRef()]);
+  const [isFixedSwitch, setIsFixedSwitch] = React.useState([false, false, false]);
 
   const typingIntervalRef = React.useRef<any>();
   const cursorIntervalRef = React.useRef<any>();
@@ -233,16 +234,19 @@ const App: React.FC = () => {
 
   function getWord(): string {
     var i: number = Math.floor(Math.random() * words.length);
-    while (seenWords.has(i)) {
+    while (seenWords.has(words[i])) {
       i = Math.floor(Math.random() * words.length);
     }
-    seenWords.add(i);
+    seenWords.add(words[i]);
     return words[i];
   }
 
   function resetWords(e: any) {
     Promise.all(
-      wordRefs.current.map(async (ref: any) => {
+      wordRefs.current.map(async (ref: any, i: number) => {
+        if (isFixedSwitch[i]) {
+          return;
+        }
         return await changeWordStyle(ref);
       })
     ).then((results) => {
@@ -252,8 +256,21 @@ const App: React.FC = () => {
           return;
         }
       });
-      seenWords = new Set();
-      setThreeWords([getWord(), getWord(), getWord()]);
+      for (var i = 0; i < threeWords.length; i++) {
+        if (isFixedSwitch[i]) {
+          continue;
+        }
+        seenWords.delete(threeWords[i]);
+      }
+      let newThreeWords = [...threeWords];
+      newThreeWords.map((w: any, i: number) => {
+        if (isFixedSwitch[i]) {
+          return w;
+        } else {
+          return getWord();
+        }
+      });
+      setThreeWords([...newThreeWords]);
     });
   }
 
@@ -279,6 +296,12 @@ const App: React.FC = () => {
     });
   }
 
+  const handleSwitchChange = (num: number) => {
+    let newFixedSwitch = isFixedSwitch;
+    newFixedSwitch[num] = !newFixedSwitch[num];
+    setIsFixedSwitch([...newFixedSwitch]);
+  };
+
   return (
     <div className='App'>
       <header>
@@ -296,7 +319,7 @@ const App: React.FC = () => {
             )}
           </div>
         ))}
-        <ul className='slot-words'>
+        <ul className='three-elements-container slot-words'>
           {threeWords.length > 0 &&
             threeWords.map((word: string, i: number) => (
               <Fragment key={i}>
@@ -310,6 +333,20 @@ const App: React.FC = () => {
                 )}
               </Fragment>
             ))}
+        </ul>
+        <ul className='three-elements-container switch-controller'>
+          {isFixedSwitch.map((sc: any, i: number) => (
+            <Fragment key={i}>
+              <li>
+                <Switch key={i} color='primary' checked={sc} onChange={() => handleSwitchChange(i)} />
+              </li>
+              {i < isFixedSwitch.length - 1 && (
+                <li className='middle-li white'>
+                  <p>×</p>
+                </li>
+              )}
+            </Fragment>
+          ))}
         </ul>
         <Button className='shuffle-btn' variant='contained' color='primary' onClick={resetWords}>
           Shuffle

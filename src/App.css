@@ -17,17 +17,27 @@ h2 {
   border-right: 2px solid #fff;
 }
 
-.slot-words {
-  overflow: hidden;
+.three-elements-container {
   margin: 0 auto;
-  margin-top: 40px;
-  margin-bottom: 40px;
   width: 760px;
+  overflow: hidden;
+}
+
+.three-elements-container li {
+  float: left;
+  width: 30%;
+}
+
+.three-elements-container .middle-li {
+  width: 5% !important;
+}
+
+.slot-words {
+  margin-top: 40px;
+  margin-bottom: 12px;
 }
 
 .slot-words li {
-  float: left;
-  width: 30%;
   font-size: 24px;
   overflow: hidden;
 }
@@ -42,9 +52,10 @@ h2 {
   padding: 20px 0;
 }
 
-.slot-words .middle-li {
-  width: 5% !important;
+.switch-controller {
+  margin-bottom: 36px;
 }
+
 .description {
   margin: 4px;
   font-size: 17px;
