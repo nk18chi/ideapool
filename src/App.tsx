@@ -1,182 +1,24 @@
 import React, { Fragment } from "react";
 import "./App.css";
 import { Button, Switch } from "@material-ui/core/";
+import { words } from "./model/words";
+
+var seenWords: Set<string> = new Set();
+const initialWords = [getWord(), getWord(), getWord()];
+
+function getWord(): string {
+  var i: number = Math.floor(Math.random() * words.length);
+  while (seenWords.has(words[i])) {
+    i = Math.floor(Math.random() * words.length);
+  }
+  seenWords.add(words[i]);
+  return words[i];
+}
 
 const App: React.FC = () => {
-  var seenWords: Set<string> = new Set();
-  const words: string[] = [
-    "Telephone",
-    "Movie",
-    "Coding",
-    "Music",
-    "Engineer",
-    "Memo",
-    "Video",
-    "Short message",
-    "Short Video",
-    "Communication",
-    "Dating",
-    "Restaurant",
-    "Taxi",
-    "Food",
-    "Hotel",
-    "Online",
-    "Storage",
-    "Subscription",
-    "Chat",
-    "Cloud",
-    "Share",
-    "Friend",
-    "Rating",
-    "C2C",
-    "Delivery",
-    "Booking",
-    "Internet",
-    "Log",
-    "anywhere",
-    "Connection",
-    "Cheap",
-    "Telphone",
-    "AI",
-    "Recommendation",
-    "Book",
-    "Fashion",
-    "Social Network",
-    "Computer Enginner",
-    "Camera",
-    "Picture",
-    "Schedule",
-    "Dictionary",
-    "Bookmark",
-    "Comment",
-    "Discussion",
-    "Translation",
-    "News",
-    "Realtime",
-    "Message",
-    "Map",
-    "Weather",
-    "Partner",
-    "Family",
-    "Cooking",
-    "Secret",
-    "Private",
-    "Public",
-    "Study",
-    "Measure",
-    "Appliance",
-    "3D",
-    "Virtual",
-    "Drone",
-    "Porn",
-    "Manga",
-    "Account",
-    "Bank",
-    "Lawyer",
-    "Accountant",
-    "Doctor",
-    "Artist",
-    "Game",
-    "Auction",
-    "Flea market",
-    "Wallet",
-    "Mail",
-    "Calendar",
-    "Reminder",
-    "Home",
-    "Remote",
-    "Exercise",
-    "Hair cut",
-    "Beauty",
-    "Cosmetic",
-    "Cryptocurrency",
-    "Currency",
-    "History",
-    "Quiz",
-    "Expensive",
-    "Lagujuary",
-    "Radio",
-    "Newspaper",
-    "Alerm",
-    "Notification",
-    "Record",
-    "Audio",
-    "Travel",
-    "Event",
-    "Tool",
-    "Language",
-    "Transportation",
-    "Advertisement",
-    "Free",
-    "Relax",
-    "Compare",
-    "Election",
-    "Adult",
-    "Child",
-    "Baby",
-    "Abroad",
-    "School",
-    "Student",
-    "Senior",
-    "Young",
-    "Country",
-    "Introduction",
-    "Health",
-    "Library",
-    "Sport",
-    "Broadcast",
-    "Exam",
-    "Analysis",
-    "Interview",
-    "Job",
-    "Insurance",
-    "location",
-    "Competition",
-    "Entertaiment",
-    "Flight",
-    "Driver",
-    "BtoC",
-    "Magazine",
-    "Relationship",
-    "Teaching",
-    "Teacher",
-    "Photo",
-    "Studio",
-    "Recipe",
-    "Contract",
-    "Employment",
-    "Guidance",
-    "Priority",
-    "Suggestion",
-    "Charity",
-    "Donation",
-    "Feedback",
-    "Singer",
-    "Athlete",
-    "Clothes",
-    "Drawing",
-    "Poem",
-    "Wedding",
-    "Funeral",
-    "Platform",
-    "Pets",
-    "Review",
-    "Code",
-    "International",
-    "Survey",
-    "Scan",
-    "Security",
-    "Television",
-    "Letter",
-    "Live viewing",
-    "Coaching",
-    "Retro",
-    "Education",
-    "Grobal",
-  ];
-  const [threeWords, setThreeWords] = React.useState<string[]>([getWord(), getWord(), getWord()]);
+  const [threeWords, setThreeWords] = React.useState<string[]>(initialWords);
   const wordRefs = React.useRef<any>([React.useRef(), React.useRef(), React.useRef()]);
-  const [isFixedSwitch, setIsFixedSwitch] = React.useState([false, false, false]);
+  const [fixedSwitch, setFixedSwitch] = React.useState([false, false, false]);
 
   const typingIntervalRef = React.useRef<any>();
   const cursorIntervalRef = React.useRef<any>();
@@ -232,20 +74,11 @@ const App: React.FC = () => {
     };
   }, [count, index, typingRefs, typingTextArr, typingTextData]);
 
-  function getWord(): string {
-    var i: number = Math.floor(Math.random() * words.length);
-    while (seenWords.has(words[i])) {
-      i = Math.floor(Math.random() * words.length);
-    }
-    seenWords.add(words[i]);
-    return words[i];
-  }
-
   function resetWords(e: any) {
     Promise.all(
       wordRefs.current.map(async (ref: any, i: number) => {
-        if (isFixedSwitch[i]) {
-          return;
+        if (fixedSwitch[i]) {
+          return "success";
         }
         return await changeWordStyle(ref);
       })
@@ -257,18 +90,13 @@ const App: React.FC = () => {
         }
       });
       for (var i = 0; i < threeWords.length; i++) {
-        if (isFixedSwitch[i]) {
+        if (fixedSwitch[i]) {
           continue;
         }
         seenWords.delete(threeWords[i]);
       }
-      let newThreeWords = [...threeWords];
-      newThreeWords.map((w: any, i: number) => {
-        if (isFixedSwitch[i]) {
-          return w;
-        } else {
-          return getWord();
-        }
+      let newThreeWords = threeWords.map((w: any, i: number) => {
+        return fixedSwitch[i] ? w : getWord();
       });
       setThreeWords([...newThreeWords]);
     });
@@ -297,9 +125,11 @@ const App: React.FC = () => {
   }
 
   const handleSwitchChange = (num: number) => {
-    let newFixedSwitch = isFixedSwitch;
-    newFixedSwitch[num] = !newFixedSwitch[num];
-    setIsFixedSwitch([...newFixedSwitch]);
+    setFixedSwitch(
+      fixedSwitch.map((sc: any, i: number) => {
+        return i === num ? !sc : sc;
+      })
+    );
   };
 
   return (
@@ -335,12 +165,12 @@ const App: React.FC = () => {
             ))}
         </ul>
         <ul className='three-elements-container switch-controller'>
-          {isFixedSwitch.map((sc: any, i: number) => (
+          {fixedSwitch.map((sc: any, i: number) => (
             <Fragment key={i}>
               <li>
                 <Switch key={i} color='primary' checked={sc} onChange={() => handleSwitchChange(i)} />
               </li>
-              {i < isFixedSwitch.length - 1 && (
+              {i < fixedSwitch.length - 1 && (
                 <li className='middle-li white'>
                   <p>×</p>
                 </li>
