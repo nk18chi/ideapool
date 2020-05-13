@@ -27,6 +27,7 @@ const App: React.FC = () => {
   const [index, setIndex] = React.useState(0);
   const [count, setCount] = React.useState(0);
   const [isCursor, setIsCursor] = React.useState(true);
+  const [isShuffleBtn, setIsShuffleBtn] = React.useState(true);
 
   const typingTextData = [
     "Let's think creatively!",
@@ -73,6 +74,11 @@ const App: React.FC = () => {
       clearInterval(typingIntervalRef.current);
     };
   }, [count, index, typingRefs, typingTextArr, typingTextData]);
+
+  React.useEffect(() => {
+    let swtchCount: number = fixedSwitch.filter((sc: boolean) => sc).length;
+    setIsShuffleBtn(swtchCount !== fixedSwitch.length);
+  }, [fixedSwitch, isShuffleBtn]);
 
   function resetWords(e: any) {
     Promise.all(
@@ -186,7 +192,7 @@ const App: React.FC = () => {
             </Fragment>
           ))}
         </ul>
-        <Button className='shuffle-btn' variant='contained' color='primary' onClick={resetWords}>
+        <Button className='shuffle-btn' variant='contained' color='primary' onClick={resetWords} disabled={!isShuffleBtn}>
           Shuffle
         </Button>
       </article>
