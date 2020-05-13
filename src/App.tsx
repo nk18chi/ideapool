@@ -16,7 +16,7 @@ function getWord(): string {
 }
 
 const App: React.FC = () => {
-  const [threeWords, setThreeWords] = React.useState<string[]>(initialWords);
+  const [shuffleWords, setShuffleWords] = React.useState<string[]>(initialWords);
   const wordRefs = React.useRef<any>([React.useRef(), React.useRef(), React.useRef()]);
   const [fixedSwitch, setFixedSwitch] = React.useState([false, false, false]);
 
@@ -89,16 +89,16 @@ const App: React.FC = () => {
           return;
         }
       });
-      for (var i = 0; i < threeWords.length; i++) {
+      for (var i = 0; i < shuffleWords.length; i++) {
         if (fixedSwitch[i]) {
           continue;
         }
-        seenWords.delete(threeWords[i]);
+        seenWords.delete(shuffleWords[i]);
       }
-      let newThreeWords = threeWords.map((w: any, i: number) => {
+      let newThreeWords = shuffleWords.map((w: any, i: number) => {
         return fixedSwitch[i] ? w : getWord();
       });
-      setThreeWords([...newThreeWords]);
+      setShuffleWords([...newThreeWords]);
     });
   }
 
@@ -132,6 +132,14 @@ const App: React.FC = () => {
     );
   };
 
+  const handleTextChange = (num: number, event: React.ChangeEvent<HTMLInputElement>) => {
+    setShuffleWords(
+      shuffleWords.map((w: any, i: number) => {
+        return i === num ? event.target.value : w;
+      })
+    );
+  };
+
   return (
     <div className='App'>
       <header>
@@ -150,13 +158,13 @@ const App: React.FC = () => {
           </div>
         ))}
         <ul className='three-elements-container slot-words'>
-          {threeWords.length > 0 &&
-            threeWords.map((word: string, i: number) => (
+          {shuffleWords.length > 0 &&
+            shuffleWords.map((word: string, i: number) => (
               <Fragment key={i}>
                 <li className='slot-word-li'>
-                  <p ref={wordRefs.current[i]}>{word}</p>
+                  <input ref={wordRefs.current[i]} value={word} onChange={(e) => handleTextChange(i, e)} />
                 </li>
-                {i < threeWords.length - 1 && (
+                {i < shuffleWords.length - 1 && (
                   <li className='middle-li'>
                     <p>×</p>
                   </li>
