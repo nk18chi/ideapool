@@ -22,7 +22,7 @@ const LoginPage: React.FC = (props: any) => {
           props.history.push("/");
         }
         if (user && !user.emailVerified) {
-          setLoginError("メール認証がされていないのでログインできません。ベンチャーデスクより送られたメールを再度ご確認ください。");
+          setLoginError("You did not verify the email from this app so that you cannot log in. Please confirm your email box again.");
           setSubmitLoading(false);
           user.sendEmailVerification().then(() => {
             auth.signOut();
@@ -30,17 +30,17 @@ const LoginPage: React.FC = (props: any) => {
         }
       })
       .catch((error: any) => {
-        // setLoginError(error.message);
+        setLoginError(error.message);
         setSubmitLoading(false);
       });
   };
 
   return (
     <div className='one-column'>
-      <h1>ログイン</h1>
+      <h1>Login Page</h1>
       <form className='one-column-form' onSubmit={(e) => handleLogin(e)}>
-        <TextField required id='email' label='メールアドレス' type='email' fullWidth onChange={(e) => setEmail(e.target.value)} />
-        <TextField required id='password' label='パスワード' type='password' fullWidth onChange={(e) => setPassword(e.target.value)} />
+        <TextField required id='email' label='email' type='email' fullWidth onChange={(e) => setEmail(e.target.value)} />
+        <TextField required id='password' label='password' type='password' fullWidth onChange={(e) => setPassword(e.target.value)} />
         {loginError && (
           <div className='make-space'>
             <Alert severity='error'>{loginError}</Alert>
@@ -49,7 +49,7 @@ const LoginPage: React.FC = (props: any) => {
         <Grid className='center block'>
           <div className='loading-wrapper'>
             <Button variant='contained' color='primary' size='large' type='submit' disabled={submitLoading}>
-              ログインする
+              Login
             </Button>
             {submitLoading && <CircularProgress className='loading' size={24} />}
           </div>
@@ -57,7 +57,7 @@ const LoginPage: React.FC = (props: any) => {
       </form>
       <div className='password-forget-link center'>
         <Link component={RouterLink} to='/forget_password'>
-          パスワードを忘れた方はこちら
+          Forgot password?
         </Link>
       </div>
     </div>
