@@ -4,11 +4,6 @@
   margin-top: 40px;
 }
 
-h1 {
-  font-size: 40px;
-  margin: 24px 0 12px;
-}
-
 h2 {
   font-size: 36px;
   margin: 8px 0;
@@ -83,12 +78,4 @@ h2 {
 .shuffle-btn {
   font-size: 20px !important;
   border-radius: 20px !important;
-}
-
-footer {
-  background-color: #333;
-  color: #f1f1f1;
-  padding: 8px;
-  font-size: 13px;
-  margin-top: 80px;
 }

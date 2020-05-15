@@ -147,65 +147,59 @@ const TopPage: React.FC = () => {
   };
 
   return (
-    <>
-      <header>
-        <h1>Idea Bank</h1>
-      </header>
-      <article>
-        {typingTextArr.map((t: string, i: number) => (
-          <div key={i}>
-            {i === 0 ? (
-              <h2 ref={typingRefs[i]}>{t}</h2>
-            ) : (
-              <p ref={typingRefs[i]} className='description'>
-                {t}
-              </p>
-            )}
-          </div>
-        ))}
-        <ul className='three-elements-container slot-words'>
-          {shuffleWords.length > 0 &&
-            shuffleWords.map((word: string, i: number) => (
-              <Fragment key={i}>
-                <li className='slot-word-li'>
-                  <input ref={wordRefs.current[i]} value={word} onChange={(e) => handleTextChange(i, e)} />
-                </li>
-                {i < shuffleWords.length - 1 && (
-                  <li className='middle-li'>
-                    <p>×</p>
-                  </li>
-                )}
-              </Fragment>
-            ))}
-        </ul>
-        <ul className='three-elements-container switch-controller'>
-          {fixedSwitch.map((sc: any, i: number) => (
+    <article>
+      {typingTextArr.map((t: string, i: number) => (
+        <div key={i}>
+          {i === 0 ? (
+            <h2 ref={typingRefs[i]}>{t}</h2>
+          ) : (
+            <p ref={typingRefs[i]} className='description'>
+              {t}
+            </p>
+          )}
+        </div>
+      ))}
+      <ul className='three-elements-container slot-words'>
+        {shuffleWords.length > 0 &&
+          shuffleWords.map((word: string, i: number) => (
             <Fragment key={i}>
-              <li>
-                <Switch key={i} color='primary' checked={sc} onChange={() => handleSwitchChange(i)} />
+              <li className='slot-word-li'>
+                <input ref={wordRefs.current[i]} value={word} onChange={(e) => handleTextChange(i, e)} />
               </li>
-              {i < fixedSwitch.length - 1 && (
-                <li className='middle-li white'>
+              {i < shuffleWords.length - 1 && (
+                <li className='middle-li'>
                   <p>×</p>
                 </li>
               )}
             </Fragment>
           ))}
-        </ul>
-        <Button
-          className='shuffle-btn'
-          variant='contained'
-          color='primary'
-          size='large'
-          onClick={resetWords}
-          disabled={!isShuffleBtn}
-          startIcon={<Shuffle />}
-        >
-          Shuffle
-        </Button>
-      </article>
-      <footer>2020 © ideabank-1887f.web.app All Rights Reserved.</footer>
-    </>
+      </ul>
+      <ul className='three-elements-container switch-controller'>
+        {fixedSwitch.map((sc: any, i: number) => (
+          <Fragment key={i}>
+            <li>
+              <Switch key={i} color='primary' checked={sc} onChange={() => handleSwitchChange(i)} />
+            </li>
+            {i < fixedSwitch.length - 1 && (
+              <li className='middle-li white'>
+                <p>×</p>
+              </li>
+            )}
+          </Fragment>
+        ))}
+      </ul>
+      <Button
+        className='shuffle-btn'
+        variant='contained'
+        color='primary'
+        size='large'
+        onClick={resetWords}
+        disabled={!isShuffleBtn}
+        startIcon={<Shuffle />}
+      >
+        Shuffle
+      </Button>
+    </article>
   );
 };
 
