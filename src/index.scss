@@ -1,3 +1,5 @@
+@import "./Model.scss";
+
 body {
   margin: 0;
   font-family: "Open Sans", sans-serif;
@@ -144,14 +146,58 @@ a {
 /* ---------- reset css end  ----------  */
 
 #root {
-  border-top: 8px solid #ffd31d;
-  color: #484848;
+  border-top: 8px solid $mainColor;
+  color: $textColor;
+  text-align: center;
 }
 
-.shuffle-btn {
-  background-color: #ffd31d !important;
+.yellow-btn {
+  background-color: $mainColor !important;
 }
 
 .white {
-  color: #fff;
+  color: white;
+}
+
+.App {
+  margin: 0 auto;
+  width: 800px;
+}
+
+h2 {
+  font-size: 32px;
+  margin: 8px 0;
+  font-weight: normal;
+  display: inline-block;
+  border-right: 2px solid #fff;
+}
+
+.margin8 {
+  overflow: hidden;
+  margin: 8px !important;
+}
+
+.loading-wrapper {
+  position: relative;
+}
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -12px;
+  margin-left: -12px;
+}
+
+.description {
+  margin: 4px;
+  font-size: 17px;
+  display: inline-block;
+  border-right: 2px solid #fff;
+}
+
+.description svg {
+  font-size: 24px;
+  position: relative;
+  top: 4px;
 }

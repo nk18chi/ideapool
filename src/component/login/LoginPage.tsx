@@ -1,4 +1,5 @@
 import React from "react";
+import "./LoginPage.scss";
 import { TextField, Button, Grid, CircularProgress } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import { Link as RouterLink } from "react-router-dom";
@@ -37,25 +38,33 @@ const LoginPage: React.FC = (props: any) => {
 
   return (
     <div className='one-column'>
-      <h1>Login Page</h1>
-      <form className='one-column-form' onSubmit={(e) => handleLogin(e)}>
-        <TextField required id='email' label='email' type='email' fullWidth onChange={(e) => setEmail(e.target.value)} />
-        <TextField required id='password' label='password' type='password' fullWidth onChange={(e) => setPassword(e.target.value)} />
+      <h2>Login Page</h2>
+      <form className='login-form' onSubmit={(e) => handleLogin(e)}>
+        <TextField className='margin8' required id='email' label='email' type='email' fullWidth onChange={(e) => setEmail(e.target.value)} />
+        <TextField
+          className='margin8'
+          required
+          id='password'
+          label='password'
+          type='password'
+          fullWidth
+          onChange={(e) => setPassword(e.target.value)}
+        />
         {loginError && (
-          <div className='make-space'>
+          <div className='margin8'>
             <Alert severity='error'>{loginError}</Alert>
           </div>
         )}
-        <Grid className='center block'>
+        <Grid className='margin8'>
           <div className='loading-wrapper'>
-            <Button variant='contained' color='primary' size='large' type='submit' disabled={submitLoading}>
+            <Button className='yellow-btn' variant='contained' color='primary' size='large' type='submit' disabled={submitLoading}>
               Login
             </Button>
             {submitLoading && <CircularProgress className='loading' size={24} />}
           </div>
         </Grid>
       </form>
-      <div className='password-forget-link center'>
+      <div className='password-forget-link'>
         <Link component={RouterLink} to='/forget_password'>
           Forgot password?
         </Link>

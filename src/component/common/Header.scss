@@ -1,4 +1,21 @@
+@import "../../Model.scss";
+
 header h1 {
   font-size: 40px;
-  margin: 24px 0 12px;
+  margin-bottom: 12px;
+}
+
+header h1 a {
+  color: $textColor !important;
+}
+
+.header-links {
+  overflow: hidden;
+  padding: 12px 0;
+}
+
+.header-links li {
+  float: right;
+  padding: 0 12px;
+  display: inline-block;
 }

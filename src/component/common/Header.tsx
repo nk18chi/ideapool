@@ -22,24 +22,40 @@ const Header: React.FC = () => {
 
   return (
     <header>
+      <nav>
+        <ul className='header-links'>
+          {!user.loading && user.authUser ? (
+            <>
+              <li>
+                <Link component={RouterLink} to='/mypage'>
+                  My page
+                </Link>
+              </li>
+              <li>
+                <Link onClick={handleSingOut}>Logout</Link>
+              </li>
+            </>
+          ) : (
+            <>
+              <li>
+                <Link component={RouterLink} to='/signup'>
+                  Sign up
+                </Link>
+              </li>
+              <li>
+                <Link component={RouterLink} to='/login'>
+                  Login
+                </Link>
+              </li>
+            </>
+          )}
+        </ul>
+      </nav>
       <h1>
         <Link component={RouterLink} to='/'>
           Idea Bank
         </Link>
       </h1>
-      <ul>
-        {!user.loading && user.authUser ? (
-          <li>
-            <Link onClick={handleSingOut}>logout</Link>
-          </li>
-        ) : (
-          <li>
-            <Link component={RouterLink} to='/login'>
-              login
-            </Link>
-          </li>
-        )}
-      </ul>
       <Snackbar
         open={open}
         autoHideDuration={4000}

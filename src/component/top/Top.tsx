@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import "./Top.scss"
 import { Button, Switch } from "@material-ui/core/";
 import { words } from "../../model/words";
 import { Shuffle } from "@material-ui/icons/";
@@ -189,7 +190,7 @@ const TopPage: React.FC = () => {
         ))}
       </ul>
       <Button
-        className='shuffle-btn'
+        className='shuffle-btn yellow-btn'
         variant='contained'
         color='primary'
         size='large'
