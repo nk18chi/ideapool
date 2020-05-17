@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import "./Top.scss"
+import "./Top.scss";
 import { Button, Switch } from "@material-ui/core/";
 import { words } from "../../model/words";
 import { Shuffle } from "@material-ui/icons/";
@@ -152,9 +152,11 @@ const TopPage: React.FC = () => {
       {typingTextArr.map((t: string, i: number) => (
         <div key={i}>
           {i === 0 ? (
-            <h2 ref={typingRefs[i]}>{t}</h2>
+            <h2 className='typing-text' ref={typingRefs[i]}>
+              {t}
+            </h2>
           ) : (
-            <p ref={typingRefs[i]} className='description'>
+            <p ref={typingRefs[i]} className='typing-text description'>
               {t}
             </p>
           )}

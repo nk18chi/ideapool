@@ -27,12 +27,13 @@ const Header: React.FC = () => {
           {!user.loading && user.authUser ? (
             <>
               <li>
-                <Link component={RouterLink} to='/mypage'>
-                  My page
-                </Link>
-              </li>
-              <li>
                 <Link onClick={handleSingOut}>Logout</Link>
+              </li>
+
+              <li>
+                <Link component={RouterLink} to='/mypage'>
+                  {user.authUser.displayName || ""}
+                </Link>
               </li>
             </>
           ) : (

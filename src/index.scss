@@ -145,6 +145,11 @@ a {
 }
 /* ---------- reset css end  ----------  */
 
+p {
+  margin: 8px 0;
+  line-height: 24px;
+}
+
 #root {
   border-top: 8px solid $mainColor;
   color: $textColor;
@@ -159,17 +164,24 @@ a {
   color: white;
 }
 
-.App {
-  margin: 0 auto;
-  width: 800px;
+h1 {
+  font-size: 40px;
+  margin-bottom: 12px;
+}
+
+h1 a {
+  color: $textColor !important;
 }
 
 h2 {
   font-size: 32px;
   margin: 8px 0;
   font-weight: normal;
-  display: inline-block;
-  border-right: 2px solid #fff;
+}
+
+.App {
+  margin: 0 auto;
+  width: 800px;
 }
 
 .margin8 {
@@ -192,8 +204,6 @@ h2 {
 .description {
   margin: 4px;
   font-size: 17px;
-  display: inline-block;
-  border-right: 2px solid #fff;
 }
 
 .description svg {
