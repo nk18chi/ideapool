@@ -8,5 +8,12 @@
 }
 
 .document h2 {
-  margin-top: 32px;
+  margin: 32px 0 12px;
+}
+
+.document li {
+  margin-left: 24px;
+  list-style: disc;
+  margin: 8px 0 8px 24px;
+  line-height: 24px;
 }
