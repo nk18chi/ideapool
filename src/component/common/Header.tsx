@@ -32,7 +32,7 @@ const Header: React.FC = () => {
 
               <li>
                 <Link component={RouterLink} to='/mypage'>
-                  {user.authUser.displayName || ""}
+                  mypage
                 </Link>
               </li>
             </>
@@ -54,7 +54,7 @@ const Header: React.FC = () => {
       </nav>
       <h1>
         <Link component={RouterLink} to='/'>
-          Idea Bank
+          Idea Pool
         </Link>
       </h1>
       <Snackbar

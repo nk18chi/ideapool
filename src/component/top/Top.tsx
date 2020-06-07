@@ -32,7 +32,7 @@ const TopPage: React.FC = () => {
 
   const typingTextData = [
     "Let's think creatively!",
-    "Come up with a new idea by combining the following three words.",
+    "Try to come up with a new idea by combining the following three words.",
     "ex.) 📞Telephone　✖️ 🎵Music　✖️ 🌍Internet　= 📱iPhone",
   ];
 
