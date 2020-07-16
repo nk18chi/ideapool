@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import "./Top.scss";
 import { Button, Switch } from "@material-ui/core/";
-import { words } from "../../model/words";
+import { words } from "../../../data/words";
 import { Shuffle } from "@material-ui/icons/";
 
 var seenWords: Set<string> = new Set();

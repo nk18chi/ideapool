@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./LoginPage.scss";
 import { TextField, Button, Grid, CircularProgress } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import { Link as RouterLink } from "react-router-dom";
 import Link from "@material-ui/core/Link";
-import { auth } from "../../firebase";
+import { FirebaseContext } from "../../../contexts/FirebaseContext";
 
 const LoginPage: React.FC = (props: any) => {
+  const { auth } = useContext(FirebaseContext);
   const [submitLoading, setSubmitLoading] = React.useState(false);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -17,7 +18,7 @@ const LoginPage: React.FC = (props: any) => {
     setSubmitLoading(true);
     auth
       .signInWithEmailAndPassword(email, password)
-      .then((res) => {
+      .then((res: any) => {
         let user = auth.currentUser;
         if (user && user.emailVerified) {
           props.history.push("/");

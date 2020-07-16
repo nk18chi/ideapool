@@ -15,12 +15,13 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
-import { FirebaseContext } from "../../firebase";
+
 import Alert from "@material-ui/lab/Alert";
 import Document from "../static/Document";
+import { FirebaseContext } from "../../../contexts/FirebaseContext";
 
-const termFilePath = require("../../doc/TermsOfService.md");
-const privacyFilePath = require("../../doc/PrivacyPolicy.md");
+const termFilePath = require("../../../doc/TermsOfService.md");
+const privacyFilePath = require("../../../doc/PrivacyPolicy.md");
 
 const SignUpPage: React.FC = (props: any) => {
   const { auth } = React.useContext(FirebaseContext);
