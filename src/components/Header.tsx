@@ -29,7 +29,7 @@ const Header: React.FC = () => {
     <header>
       <nav>
         <ul className='header-links'>
-          {!user.loading && user.authUser ? (
+          {!user.loading && user.uid ? (
             <>
               <li>
                 <Link onClick={handleSingOut}>Logout</Link>
