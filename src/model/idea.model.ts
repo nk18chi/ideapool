@@ -14,7 +14,5 @@ export type TIdeaList = {
 export type TIdeaDetail = {
   title: string;
   description: string;
-  // createdAt: firebase.firestore.Timestamp;
-  // updatedAt: firebase.firestore.Timestamp;
   user: string;
 };
