@@ -4,8 +4,8 @@ import BackDrop from "../common/BackDrop";
 import SnackBar from "../common/SnackBar";
 import { TIdeaDetail } from "../../model/idea.model";
 
-import * as firebase from "firebase/app";
 import { FirebaseContext } from "../../contexts/FirebaseContext";
+import { addNewIdea } from "../../firebase/ideas";
 
 const initialIdea = {
   user: "",
@@ -14,7 +14,7 @@ const initialIdea = {
 };
 
 const AddIdea: React.FC<any> = ({ isOpen, handleOpenDialog }) => {
-  const { user, database } = React.useContext(FirebaseContext);
+  const { user } = React.useContext(FirebaseContext);
   const [newIdea, setNewIdea] = useState<TIdeaDetail>(initialIdea);
   const [loading, setLoading] = useState<boolean>(false);
   const [showSnackBar, setShowSnackBar] = useState<boolean>(isOpen);
@@ -28,21 +28,13 @@ const AddIdea: React.FC<any> = ({ isOpen, handleOpenDialog }) => {
     setLoading(true);
     handleOpenDialog(false);
 
-    database
-      .collection("ideas")
-      .add({
-        ...newIdea,
-        user: user.authUser.uid,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-      })
-      .then(function () {
+    addNewIdea({ ...newIdea, user: user.uid! })
+      .then(() => {
         setLoading(false);
         setShowSnackBar(true);
       })
-      .catch(function (error: any) {
-        console.error("Error adding a new idea: ", error);
-        setLoading(false);
+      .catch(() => {
+        setShowSnackBar(true);
       });
   };
 

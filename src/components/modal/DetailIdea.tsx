@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useContext } from "react";
-import * as firebase from "firebase/app";
+import React, { useState, useEffect } from "react";
 import { TextField, Dialog, DialogContent, DialogActions, Button, DialogContentText } from "@material-ui/core";
 import BackDrop from "../common/BackDrop";
 import SnackBar from "../common/SnackBar";
 import { TIdeaDetail } from "../../model/idea.model";
-import { FirebaseContext } from "../../contexts/FirebaseContext";
+
+import { deleteIdea, updateIdea, getIdeaDetail } from "../../firebase/ideas";
 
 const DetailIdea: React.FC<any> = ({ isOpen, handleOpenDialog, ideaId }) => {
-  const { database } = useContext(FirebaseContext);
   const [idea, setIdea] = useState<TIdeaDetail | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [showSnackBar, setShowSnackBar] = useState<boolean>(isOpen);
@@ -19,38 +18,37 @@ const DetailIdea: React.FC<any> = ({ isOpen, handleOpenDialog, ideaId }) => {
     if (!ideaId) {
       return;
     }
-    database
-      .collection("ideas")
-      .doc(ideaId)
-      .get()
-      .then((doc: any) => {
-        let data: any = doc.data();
-        const getIdea: TIdeaDetail = { ...data };
-        setIdea(getIdea);
+
+    getIdeaDetail(ideaId)
+      .then((res: TIdeaDetail) => {
+        setIdea(res);
+        setLoading(false);
+      })
+      .catch(() => {
         setLoading(false);
       });
-  }, [database, ideaId]);
+  }, [ideaId]);
 
   const handleDeleteIdea = () => {
-    database
-      .collection("ideas")
-      .doc(ideaId)
-      .delete()
+    deleteIdea(ideaId)
       .then(() => {
         setSnackBarMessage("Success to delete the idea");
         setShowSnackBar(true);
+        handleOpenDialog(false);
+      })
+      .catch(() => {
         handleOpenDialog(false);
       });
   };
 
   const handleUpdateIdea = () => {
-    database
-      .collection("ideas")
-      .doc(ideaId)
-      .set({ ...idea!, updatedAt: firebase.firestore.FieldValue.serverTimestamp() })
+    updateIdea(ideaId, idea!)
       .then(() => {
         setSnackBarMessage("Success to update the idea");
         setShowSnackBar(true);
+        handleOpenDialog(false);
+      })
+      .catch(() => {
         handleOpenDialog(false);
       });
   };
