@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { RouteComponentProps } from "react-router-dom";
 import "./LoginPage.scss";
 import { TextField, Button, Grid, CircularProgress } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
@@ -6,22 +7,22 @@ import { Link as RouterLink } from "react-router-dom";
 import Link from "@material-ui/core/Link";
 import { FirebaseContext } from "../../../contexts/FirebaseContext";
 
-const LoginPage: React.FC = (props: any) => {
+const LoginPage: React.FC<RouteComponentProps> = ({ history }) => {
   const { auth } = useContext(FirebaseContext);
-  const [submitLoading, setSubmitLoading] = React.useState(false);
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [loginError, setLoginError] = React.useState<any>("");
+  const [submitLoading, setSubmitLoading] = React.useState<boolean>(false);
+  const [email, setEmail] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
+  const [loginError, setLoginError] = React.useState<string>("");
 
-  const handleLogin = (e: any) => {
+  const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitLoading(true);
     auth
       .signInWithEmailAndPassword(email, password)
-      .then((res: any) => {
+      .then(() => {
         let user = auth.currentUser;
         if (user && user.emailVerified) {
-          props.history.push("/");
+          history.push("/");
         }
         if (user && !user.emailVerified) {
           setLoginError("You did not verify the email from this app so that you cannot log in. Please confirm your email box again.");
@@ -31,7 +32,7 @@ const LoginPage: React.FC = (props: any) => {
           });
         }
       })
-      .catch((error: any) => {
+      .catch((error) => {
         setLoginError(error.message);
         setSubmitLoading(false);
       });

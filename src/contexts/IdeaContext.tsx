@@ -1,10 +1,10 @@
 import React, { createContext, useEffect, useState, useContext } from "react";
-import { TIdeaContext } from "../model/idea.model";
+import { TIdeaContext, TIdeaList } from "../model/idea.model";
 import { FirebaseContext } from "./FirebaseContext";
 import { getOwnIdeaList } from "../firebase/ideas";
-export const IdeaContext = createContext<any>([]);
+export const IdeaContext = createContext<TIdeaContext>({ ideas: [], loading: false });
 
-const IdeaContextProvider = ({ children }: any) => {
+const IdeaContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useContext(FirebaseContext);
   const [ideaContext, setIdeasContext] = useState<TIdeaContext>({ ideas: [], loading: false });
 
@@ -15,12 +15,12 @@ const IdeaContextProvider = ({ children }: any) => {
       return;
     }
 
-    const success = (newData: any) => {
+    const success = (newData: TIdeaList[]) => {
       setIdeasContext({ ideas: newData, loading: false });
     };
     getOwnIdeaList(user.uid, success);
   }, [user.uid]);
 
-  return <IdeaContext.Provider value={{ ideaContext }}>{children}</IdeaContext.Provider>;
+  return <IdeaContext.Provider value={ideaContext}>{children}</IdeaContext.Provider>;
 };
 export default IdeaContextProvider;

@@ -3,15 +3,12 @@ import "./MyIdeaList.scss";
 import { Card, CardContent, Typography, CardActions, Button, CircularProgress } from "@material-ui/core";
 import DetailIdea from "../../modal/DetailIdea";
 import { IdeaContext } from "../../../contexts/IdeaContext";
+import { TIdeaContext } from "../../../model/idea.model";
 
 const MyIdeaList: React.FC = () => {
-  const { ideaContext } = useContext<any>(IdeaContext);
+  const ideaContext = useContext<TIdeaContext>(IdeaContext);
   const [clickedIdea, setClickedIdea] = useState<string>("");
   const [openIdeaDetailDialog, setOpenIdeaDetailDialog] = useState<boolean>(false);
-
-  const handleIdeaDetailDialog = (ableOpen: boolean) => {
-    setOpenIdeaDetailDialog(ableOpen);
-  };
 
   return (
     <>
@@ -22,7 +19,7 @@ const MyIdeaList: React.FC = () => {
         <div className='idea-list'>
           {ideaContext.ideas && ideaContext.ideas.length > 0 ? (
             <>
-              {ideaContext.ideas.map((idea: any) => (
+              {ideaContext.ideas.map((idea) => (
                 <Card key={idea.id} style={{ marginTop: 12, marginBottom: 12 }}>
                   <CardContent>
                     <Typography variant='h5' component='h2'>
@@ -46,7 +43,7 @@ const MyIdeaList: React.FC = () => {
                   </CardActions>
                 </Card>
               ))}
-              <DetailIdea isOpen={openIdeaDetailDialog} handleOpenDialog={handleIdeaDetailDialog} ideaId={clickedIdea} />
+              <DetailIdea isOpen={openIdeaDetailDialog} handleOpenDialog={setOpenIdeaDetailDialog} ideaId={clickedIdea} />
             </>
           ) : (
             <p>no ideas</p>

@@ -6,6 +6,7 @@ import { TIdeaDetail } from "../../model/idea.model";
 
 import { FirebaseContext } from "../../contexts/FirebaseContext";
 import { addNewIdea } from "../../firebase/ideas";
+import { TAddIdea } from "../../model/component.model";
 
 const initialIdea = {
   user: "",
@@ -13,7 +14,7 @@ const initialIdea = {
   description: "",
 };
 
-const AddIdea: React.FC<any> = ({ isOpen, handleOpenDialog }) => {
+const AddIdea: React.FC<TAddIdea> = ({ isOpen, handleOpenDialog }) => {
   const { user } = React.useContext(FirebaseContext);
   const [newIdea, setNewIdea] = useState<TIdeaDetail>(initialIdea);
   const [loading, setLoading] = useState<boolean>(false);

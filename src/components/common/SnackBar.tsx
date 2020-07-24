@@ -1,9 +1,10 @@
 import React from "react";
 import { Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
+import { TSnacBar } from "../../model/component.model";
 
-const SnackBar: React.FC<any> = ({ showSnackBar, setShowSnackBar, message }) => {
-  const handleSnackBar = (event?: React.SyntheticEvent, reason?: string) => {
+const SnackBar: React.FC<TSnacBar> = ({ showSnackBar, setShowSnackBar, message }) => {
+  const handleSnackBar = (_: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
       return;
     }

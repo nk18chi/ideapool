@@ -5,8 +5,9 @@ import SnackBar from "../common/SnackBar";
 import { TIdeaDetail } from "../../model/idea.model";
 
 import { deleteIdea, updateIdea, getIdeaDetail } from "../../firebase/ideas";
+import { TDetailIdea } from "../../model/component.model";
 
-const DetailIdea: React.FC<any> = ({ isOpen, handleOpenDialog, ideaId }) => {
+const DetailIdea: React.FC<TDetailIdea> = ({ isOpen, handleOpenDialog, ideaId }) => {
   const [idea, setIdea] = useState<TIdeaDetail | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [showSnackBar, setShowSnackBar] = useState<boolean>(isOpen);

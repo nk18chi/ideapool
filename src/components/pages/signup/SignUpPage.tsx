@@ -15,6 +15,7 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@material-ui/core";
+import { RouteComponentProps } from "react-router-dom";
 
 import Alert from "@material-ui/lab/Alert";
 import Document from "../static/Document";
@@ -23,7 +24,7 @@ import { FirebaseContext } from "../../../contexts/FirebaseContext";
 const termFilePath = require("../../../doc/TermsOfService.md");
 const privacyFilePath = require("../../../doc/PrivacyPolicy.md");
 
-const SignUpPage: React.FC = (props: any) => {
+const SignUpPage: React.FC<RouteComponentProps> = ({ history }) => {
   const { auth } = React.useContext(FirebaseContext);
   const [emailVerifyDialog, setEmailVerifyDialog] = React.useState(false);
   const [termRuleDialog, setTermRuleDialog] = React.useState(false);
@@ -33,7 +34,7 @@ const SignUpPage: React.FC = (props: any) => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [acceptedRule, setAcceptedRule] = React.useState(false);
-  const [singUpError, setSingUpError] = React.useState<any>("");
+  const [singUpError, setSingUpError] = React.useState<string>("");
 
   const handleAcceptedRuleChange = () => {
     setAcceptedRule(!acceptedRule);
@@ -49,12 +50,12 @@ const SignUpPage: React.FC = (props: any) => {
     }
   };
 
-  const handleSignUp = (e: any) => {
+  const handleSignUp = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     visibleSubmitButton(false);
     auth
       .createUserWithEmailAndPassword(email, password)
-      .then(function (user: any) {
+      .then(() => {
         const currentUser = auth.currentUser;
         if (currentUser === null) {
           return;
@@ -70,17 +71,17 @@ const SignUpPage: React.FC = (props: any) => {
                 auth.signOut();
                 setEmailVerifyDialog(true);
               })
-              .catch((error: any) => {
+              .catch(() => {
                 setSingUpError("Email verify error. Could you contact us?");
                 visibleSubmitButton(true);
               });
           })
-          .catch((error: any) => {
+          .catch((error) => {
             setSingUpError(error.message);
             visibleSubmitButton(true);
           });
       })
-      .catch((error: any) => {
+      .catch((error) => {
         setSingUpError(error.message);
         visibleSubmitButton(true);
       });
@@ -88,7 +89,7 @@ const SignUpPage: React.FC = (props: any) => {
 
   const handleCloseEmailVerifyDialog = () => {
     setEmailVerifyDialog(false);
-    props.history.push("/login");
+    history.push("/login");
   };
 
   const handleOpenTermRuleDialog = () => {

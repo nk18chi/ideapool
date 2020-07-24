@@ -4,11 +4,11 @@ import { TIdeaDetail, TIdeaList } from "../model/idea.model";
 
 const ref = database.collection("ideas");
 
-export const getOwnIdeaList = (uid: string, success: (newData: any) => void) => {
-  ref.where("user", "==", uid).onSnapshot((snap: any) => {
+export const getOwnIdeaList = (uid: string, success: (newData: TIdeaList[]) => void) => {
+  ref.where("user", "==", uid).onSnapshot((snap) => {
     const newData: TIdeaList[] = [];
-    snap.forEach((doc: any) => {
-      const data: any = doc.data();
+    snap.forEach((doc) => {
+      const data = doc.data();
       newData.push({
         id: doc.id || "",
         title: data.title || "",
@@ -24,12 +24,16 @@ export const getIdeaDetail = (id: string): Promise<TIdeaDetail> => {
     ref
       .doc(id)
       .get()
-      .then((doc: any) => {
-        let data: any = doc.data();
-        const getIdea: TIdeaDetail = { ...data };
+      .then((doc) => {
+        let data = doc.data();
+        const getIdea: TIdeaDetail = {
+          title: (data && data.title) || "",
+          description: (data && data.description) || "",
+          user: (data && data.user) || "",
+        };
         resolve(getIdea);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.error("Error fetching the idea: ", error);
         reject();
       });

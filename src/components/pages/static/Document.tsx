@@ -2,7 +2,7 @@ import React from "react";
 import "./Document.scss";
 import ReactMarkdown from "react-markdown";
 
-const Document: React.FC<any> = ({ pathFile }) => {
+const Document: React.FC<{ pathFile: string }> = ({ pathFile }) => {
   const [markdownText, setMarkdownText] = React.useState("");
 
   React.useEffect(() => {

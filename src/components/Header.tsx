@@ -10,9 +10,6 @@ const Header: React.FC = () => {
   const { user, auth } = React.useContext(FirebaseContext);
   const [open, setOpen] = React.useState(false);
   const [openIdeaFormDialog, setOpenIdeaFormDialog] = useState<boolean>(false);
-  const handleIdeaFormDialog = (ableOpen: boolean) => {
-    setOpenIdeaFormDialog(ableOpen);
-  };
 
   const handleToastClose = (event?: React.SyntheticEvent, reason?: string) => {
     if (reason === "clickaway") {
@@ -42,7 +39,7 @@ const Header: React.FC = () => {
               </li>
 
               <li>
-                <Link onClick={() => handleIdeaFormDialog(true)}>add</Link>
+                <Link onClick={() => setOpenIdeaFormDialog(true)}>add</Link>
               </li>
             </>
           ) : (
@@ -81,7 +78,7 @@ const Header: React.FC = () => {
       </Snackbar>
 
       {/* add new idea modal */}
-      <AddIdea isOpen={openIdeaFormDialog} handleOpenDialog={handleIdeaFormDialog} />
+      <AddIdea isOpen={openIdeaFormDialog} handleOpenDialog={setOpenIdeaFormDialog} />
     </header>
   );
 };

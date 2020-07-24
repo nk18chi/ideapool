@@ -10,15 +10,15 @@ type TFirebaseContext = {
 const initalUser = { uid: null, loading: false, isAdmin: false };
 export const FirebaseContext = createContext<TFirebaseContext>({ user: initalUser, auth: auth });
 
-const FirebaseContextProvider = ({ children }: any) => {
+const FirebaseContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<TUser>(initalUser);
 
   useEffect(() => {
     setUser({ uid: null, loading: true, isAdmin: false });
-    const unsubscribe = auth.onAuthStateChanged(async (usr: any) => {
+    const unsubscribe = auth.onAuthStateChanged(async (usr) => {
       if (usr && usr.emailVerified) {
         let isAdmin = false;
-        await usr.getIdTokenResult().then((idTokenResult: any) => {
+        await usr.getIdTokenResult().then((idTokenResult) => {
           if (idTokenResult.claims.admin) {
             isAdmin = true;
           }
