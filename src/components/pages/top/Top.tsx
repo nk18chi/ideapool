@@ -97,7 +97,7 @@ const TopPage: React.FC = () => {
   return (
     <article>
       <div>
-        <h2 className='typing-text'>Let's generate a new business idea</h2>
+        <h2 className='typing-text'>Generate new business ideas</h2>
         <p className='typing-text description'>associates with a new idea by combining the following those words.</p>
         <p className='typing-text description'>
           ex.){" "}
