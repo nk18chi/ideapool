@@ -6,10 +6,10 @@ export const IdeaContext = createContext<TIdeaContext>({ ideas: [], loading: fal
 
 const IdeaContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { user } = useContext(FirebaseContext);
-  const [ideaContext, setIdeasContext] = useState<TIdeaContext>({ ideas: [], loading: false });
+  const [ideaContext, setIdeasContext] = useState<TIdeaContext>({ ideas: [], loading: true });
 
   useEffect(() => {
-    setIdeasContext({ ideas: [], loading: true });
+    if (user.loading) return;
     if (!user.uid) {
       setIdeasContext({ ideas: [], loading: false });
       return;
@@ -19,7 +19,7 @@ const IdeaContextProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setIdeasContext({ ideas: newData, loading: false });
     };
     getOwnIdeaList(user.uid, success);
-  }, [user.uid]);
+  }, [user.loading, user.uid]);
 
   return <IdeaContext.Provider value={ideaContext}>{children}</IdeaContext.Provider>;
 };

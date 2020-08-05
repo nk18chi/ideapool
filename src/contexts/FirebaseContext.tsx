@@ -7,7 +7,7 @@ type TFirebaseContext = {
   auth: firebase.auth.Auth;
 };
 
-const initalUser = { uid: null, loading: false, isAdmin: false };
+const initalUser = { uid: null, loading: true, isAdmin: false };
 export const FirebaseContext = createContext<TFirebaseContext>({ user: initalUser, auth: auth });
 
 const FirebaseContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
