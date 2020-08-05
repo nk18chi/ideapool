@@ -124,7 +124,7 @@ const Header: React.FC = () => {
               <div>
                 <IconButton color='inherit' css={StyleHeaderText} component={RouterLink} to='/my_ideas'>
                   <List />
-                  idea list
+                  my ideas
                 </IconButton>
               </div>
               <div>
