@@ -1,85 +1,158 @@
 import React, { useState } from "react";
-import "./Header.scss";
 import { Link as RouterLink } from "react-router-dom";
-import MuiAlert from "@material-ui/lab/Alert";
-import { Link, Snackbar } from "@material-ui/core";
+import { Link, AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from "@material-ui/core";
+import { Add, AccountCircle, Highlight, List } from "@material-ui/icons";
 import AddIdea from "./modal/AddIdea";
 import { FirebaseContext } from "../contexts/FirebaseContext";
+import { jsx, css } from "@emotion/core";
+import { Color } from "./style/Color";
+import SnackBar from "./common/SnackBar";
+
+/** @jsx jsx */
 
 const Header: React.FC = () => {
   const { user, auth } = React.useContext(FirebaseContext);
-  const [open, setOpen] = React.useState(false);
-  const [openIdeaFormDialog, setOpenIdeaFormDialog] = useState<boolean>(false);
+  const [showSnackBar, setShowSnackBar] = useState<boolean>(false);
+  const [openAddIdeaForm, setOpenAddIdeaForm] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const isMenuOpen = Boolean(anchorEl);
 
-  const handleToastClose = (event?: React.SyntheticEvent, reason?: string) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
   const handleSingOut = () => {
     auth.signOut();
-    setOpen(true);
+    handleMenuClose();
+    setShowSnackBar(true);
   };
 
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const StyleAppBar = css`
+    background-color: #222;
+  `;
+
+  const StyleToolbar = css`
+    padding-left: 200px;
+    padding-right: 200px;
+  `;
+
+  const StyleLogo = css`
+    color: ${Color.MainColor};
+    font-weight: 800;
+    font-size: 24px;
+    color: #ffd31d;
+    padding-right: 4px;
+    position: relative;
+    bottom: 1px;
+  `;
+
+  const StyleSiteName = css`
+    color: ${Color.MainColor};
+    font-weight: 800;
+    font-size: 24px;
+    &:hover {
+      text-decoration: none;
+    }
+  `;
+
+  const StyleHeaderText = css`
+    font-size: 16px;
+    font-weight: 800;
+    color: #fff;
+    &:hover {
+      text-decoration: none;
+    }
+  `;
+
+  const StyleSignUpButton = css`
+    ${StyleHeaderText}
+    background-color: ${Color.MainColor};
+    padding: 12px;
+    border-radius: 4px;
+    margin-left: 12px;
+    &:hover {
+      background-color: ${Color.MainColor};
+    }
+  `;
+
+  const renderMenu = (
+    <Menu
+      anchorEl={anchorEl}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      keepMounted
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
+      open={isMenuOpen}
+      onClose={handleMenuClose}
+    >
+      <MenuItem onClick={handleSingOut}>Logout</MenuItem>
+    </Menu>
+  );
+
+  const renderSnackBar = <SnackBar showSnackBar={showSnackBar} setShowSnackBar={setShowSnackBar} message={"success to logout"} />;
+  const renderAddIdea = <AddIdea isOpen={openAddIdeaForm} handleOpenDialog={setOpenAddIdeaForm} />;
+
   return (
-    <header>
-      <nav>
-        <ul className='header-links'>
-          {!user.loading && user.uid ? (
-            <>
-              <li>
-                <Link onClick={handleSingOut}>Logout</Link>
-              </li>
+    <React.Fragment>
+      <AppBar position='static' css={StyleAppBar}>
+        <Toolbar css={StyleToolbar}>
+          <Highlight css={StyleLogo} />
+          <Typography variant='h1' noWrap css={StyleSiteName}>
+            <Link css={StyleSiteName} component={RouterLink} to='/'>
+              ideapool
+            </Link>
+          </Typography>
+          <div
+            css={css`
+              flex-grow: 1;
+            `}
+          />
 
-              <li>
-                <Link component={RouterLink} to='/my_ideas'>
-                  my idea
-                </Link>
-              </li>
-
-              <li>
-                <Link onClick={() => setOpenIdeaFormDialog(true)}>add</Link>
-              </li>
-            </>
+          {user.loading ? (
+            <React.Fragment></React.Fragment>
+          ) : user.uid ? (
+            <React.Fragment>
+              <div>
+                <IconButton color='inherit' css={StyleHeaderText} onClick={() => setOpenAddIdeaForm(true)}>
+                  <Add />
+                  add idea
+                </IconButton>
+              </div>
+              <div>
+                <IconButton color='inherit' css={StyleHeaderText} component={RouterLink} to='/my_ideas'>
+                  <List />
+                  idea list
+                </IconButton>
+              </div>
+              <div>
+                <IconButton edge='end' onClick={handleProfileMenuOpen} color='inherit'>
+                  <AccountCircle />
+                </IconButton>
+              </div>
+            </React.Fragment>
           ) : (
-            <>
-              <li>
-                <Link component={RouterLink} to='/signup'>
-                  Sign up
-                </Link>
-              </li>
-              <li>
-                <Link component={RouterLink} to='/login'>
+            <React.Fragment>
+              <div>
+                <IconButton color='inherit' css={StyleHeaderText} component={RouterLink} to='/login'>
                   Login
-                </Link>
-              </li>
-            </>
+                </IconButton>
+              </div>
+              <div>
+                <IconButton css={StyleSignUpButton} component={RouterLink} to='/signup'>
+                  Sign up
+                </IconButton>
+              </div>
+            </React.Fragment>
           )}
-        </ul>
-      </nav>
-      <h1>
-        <Link component={RouterLink} to='/'>
-          Idea Pool
-        </Link>
-      </h1>
-      <Snackbar
-        open={open}
-        autoHideDuration={4000}
-        onClose={handleToastClose}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-      >
-        <MuiAlert onClose={handleToastClose} severity='success'>
-          success to logout
-        </MuiAlert>
-      </Snackbar>
-
-      {/* add new idea modal */}
-      <AddIdea isOpen={openIdeaFormDialog} handleOpenDialog={setOpenIdeaFormDialog} />
-    </header>
+        </Toolbar>
+      </AppBar>
+      {renderMenu}
+      {renderSnackBar}
+      {renderAddIdea}
+    </React.Fragment>
   );
 };
 
