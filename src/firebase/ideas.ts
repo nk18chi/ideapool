@@ -5,18 +5,23 @@ import { TIdeaDetail, TIdeaList } from "../model/idea.model";
 const ref = database.collection("ideas");
 
 export const getOwnIdeaList = (uid: string, success: (newData: TIdeaList[]) => void) => {
-  ref.where("user", "==", uid).onSnapshot((snap) => {
-    const newData: TIdeaList[] = [];
-    snap.forEach((doc) => {
-      const data = doc.data();
-      newData.push({
-        id: doc.id || "",
-        title: data.title || "",
-        description: data.description || "",
+  ref
+    .where("user", "==", uid)
+    .orderBy("updatedAt", "desc")
+    .onSnapshot((snap) => {
+      const newData: TIdeaList[] = [];
+      snap.forEach((doc) => {
+        const data = doc.data();
+        newData.push({
+          id: doc.id || "",
+          title: data.title || "",
+          description: data.description || "",
+          createdAt: data.createdAt,
+          updatedAt: data.updatedAt,
+        });
       });
+      success(newData);
     });
-    success(newData);
-  });
 };
 
 export const getIdeaDetail = (id: string): Promise<TIdeaDetail> => {
@@ -27,9 +32,12 @@ export const getIdeaDetail = (id: string): Promise<TIdeaDetail> => {
       .then((doc) => {
         let data = doc.data();
         const getIdea: TIdeaDetail = {
+          id: doc.id || "",
           title: (data && data.title) || "",
           description: (data && data.description) || "",
           user: (data && data.user) || "",
+          createdAt: data && data.createdAt,
+          updatedAt: data && data.updatedAt,
         };
         resolve(getIdea);
       })

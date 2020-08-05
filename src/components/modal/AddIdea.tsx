@@ -3,15 +3,18 @@ import { TextField, Dialog, DialogTitle, DialogContent, DialogActions, Button } 
 import BackDrop from "../common/BackDrop";
 import SnackBar from "../common/SnackBar";
 import { TIdeaDetail } from "../../model/idea.model";
-
 import { FirebaseContext } from "../../contexts/FirebaseContext";
 import { addNewIdea } from "../../firebase/ideas";
 import { TAddIdea } from "../../model/component.model";
+import * as firebase from "firebase";
 
 const initialIdea = {
-  user: "",
+  id: "",
   title: "",
   description: "",
+  createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+  updatedAt: firebase.firestore.Timestamp.fromDate(new Date()),
+  user: "",
 };
 
 const AddIdea: React.FC<TAddIdea> = ({ isOpen, handleOpenDialog }) => {
@@ -29,14 +32,10 @@ const AddIdea: React.FC<TAddIdea> = ({ isOpen, handleOpenDialog }) => {
     setLoading(true);
     handleOpenDialog(false);
 
-    addNewIdea({ ...newIdea, user: user.uid! })
-      .then(() => {
-        setLoading(false);
-        setShowSnackBar(true);
-      })
-      .catch(() => {
-        setShowSnackBar(true);
-      });
+    addNewIdea({ ...newIdea, user: user.uid! }).then(() => {
+      setLoading(false);
+      setShowSnackBar(true);
+    });
   };
 
   return (
