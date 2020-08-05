@@ -14,6 +14,7 @@ import FirebaseContextProvider from "./contexts/FirebaseContext";
 import { GlobalStyles } from "./components/style/GlobalStyles";
 import { StylesProvider } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import { ForgetPasswordPage } from "./components/pages/ForgetPasswordPage";
 
 const App: FC = () => {
   return (
@@ -35,6 +36,7 @@ const App: FC = () => {
                       <Route exact path='/signup' component={SignUpPage} />
                       <Route exact path='/privacy' component={PrivacyPage} />
                       <Route exact path='/term' component={TermPage} />
+                      <Route exact path='/forget_password' component={ForgetPasswordPage} />
                     </Switch>
                   </Route>
                 </Switch>
