@@ -1,6 +1,5 @@
 import React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import "./SignUpPage.scss";
 import {
   FormControlLabel,
   Checkbox,
@@ -14,17 +13,22 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Typography,
+  Container,
 } from "@material-ui/core";
 import { RouteComponentProps } from "react-router-dom";
-
 import Alert from "@material-ui/lab/Alert";
-import Document from "../static/Document";
-import { FirebaseContext } from "../../../contexts/FirebaseContext";
+import Document from "./static/Document";
+import { FirebaseContext } from "../../contexts/FirebaseContext";
+import { StyleMainTitle, StyleInput, StylePointer, StyleMargin4, StyleSubmitButton, StyleCicularWrapper, StyleCicular } from "../style/Common.style";
+import { jsx, css } from "@emotion/core";
 
-const termFilePath = require("../../../doc/TermsOfService.md");
-const privacyFilePath = require("../../../doc/PrivacyPolicy.md");
+const termFilePath = require("../../doc/TermsOfService.md");
+const privacyFilePath = require("../../doc/PrivacyPolicy.md");
 
-const SignUpPage: React.FC<RouteComponentProps> = ({ history }) => {
+/** @jsx jsx */
+
+export const SignUpPage: React.FC<RouteComponentProps> = ({ history }) => {
   const { auth } = React.useContext(FirebaseContext);
   const [emailVerifyDialog, setEmailVerifyDialog] = React.useState(false);
   const [termRuleDialog, setTermRuleDialog] = React.useState(false);
@@ -75,10 +79,6 @@ const SignUpPage: React.FC<RouteComponentProps> = ({ history }) => {
                 setSingUpError("Email verify error. Could you contact us?");
                 visibleSubmitButton(true);
               });
-          })
-          .catch((error) => {
-            setSingUpError(error.message);
-            visibleSubmitButton(true);
           });
       })
       .catch((error) => {
@@ -92,25 +92,27 @@ const SignUpPage: React.FC<RouteComponentProps> = ({ history }) => {
     history.push("/login");
   };
 
-  const handleOpenTermRuleDialog = () => {
-    setTermRuleDialog(true);
+  const handleTermRuleDialog = (bool: boolean) => {
+    setTermRuleDialog(bool);
   };
 
-  const handleCloseTermRuleDialog = () => {
-    setTermRuleDialog(false);
+  const handlePrivacyRuleDialog = (bool: boolean) => {
+    setPrivacyRuleDialog(bool);
   };
 
-  const handleOpenPrivacyRuleDialog = () => {
-    setPrivacyRuleDialog(true);
-  };
+  const StyleAlert = css`
+    margin-bottom: 12px;
+  `;
 
-  const handleClosePrivacyRuleDialog = () => {
-    setPrivacyRuleDialog(false);
-  };
+  const StyleRuleContainer = css`
+    margin: 12px 0;
+  `;
 
   return (
-    <div>
-      <h2>Sign up</h2>
+    <Container maxWidth='sm'>
+      <Typography variant='h1' css={StyleMainTitle} align='center'>
+        Sign up
+      </Typography>
 
       {/* email verify dialog */}
       <Dialog
@@ -135,7 +137,7 @@ const SignUpPage: React.FC<RouteComponentProps> = ({ history }) => {
       {/* term rule dialog */}
       <Dialog
         open={termRuleDialog}
-        onClose={handleCloseTermRuleDialog}
+        onClose={() => handleTermRuleDialog(false)}
         aria-labelledby='alert-dialog-title'
         aria-describedby='alert-dialog-description'
       >
@@ -145,7 +147,7 @@ const SignUpPage: React.FC<RouteComponentProps> = ({ history }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseTermRuleDialog} color='primary' autoFocus>
+          <Button onClick={() => handleTermRuleDialog(false)} color='primary' autoFocus>
             OK
           </Button>
         </DialogActions>
@@ -154,7 +156,7 @@ const SignUpPage: React.FC<RouteComponentProps> = ({ history }) => {
       {/* privacy rule dialog */}
       <Dialog
         open={privacyRuleDialog}
-        onClose={handleClosePrivacyRuleDialog}
+        onClose={() => handlePrivacyRuleDialog(false)}
         aria-labelledby='alert-dialog-title'
         aria-describedby='alert-dialog-description'
       >
@@ -164,58 +166,50 @@ const SignUpPage: React.FC<RouteComponentProps> = ({ history }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClosePrivacyRuleDialog} color='primary' autoFocus>
+          <Button onClick={() => handlePrivacyRuleDialog(false)} color='primary' autoFocus>
             OK
           </Button>
         </DialogActions>
       </Dialog>
 
-      <form className='register-form' onSubmit={(e) => handleSignUp(e)}>
-        <div className='alert'>
-          <Alert severity='info'>
-            <Link component={RouterLink} to='/login'>
-              if you already have an account, click here
+      <form onSubmit={(e) => handleSignUp(e)}>
+        <Alert severity='info' css={StyleAlert}>
+          <Link component={RouterLink} to='/login'>
+            if you already have an account, click here
+          </Link>
+        </Alert>
+        <TextField css={StyleInput} required id='displayname' label='display name' fullWidth onChange={(e) => setName(e.target.value)} />
+        <TextField css={StyleInput} required id='email' label='email' type='email' fullWidth onChange={(e) => setEmail(e.target.value)} />
+        <TextField css={StyleInput} required id='password' label='password' type='password' fullWidth onChange={(e) => setPassword(e.target.value)} />
+        <Grid container direction='column' alignItems='center' css={StyleRuleContainer}>
+          <Grid item xs={12} css={StyleMargin4}>
+            <Link css={StylePointer} onClick={() => handleTermRuleDialog(true)}>
+              Terms of Service
             </Link>
-          </Alert>
-        </div>
-        <TextField className='margin8' required id='displayname' label='display name' fullWidth onChange={(e) => setName(e.target.value)} />
-        <TextField className='margin8' required id='email' label='email' type='email' fullWidth onChange={(e) => setEmail(e.target.value)} />
-        <TextField
-          className='margin8'
-          required
-          id='password'
-          label='password'
-          type='password'
-          fullWidth
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <div className='rule-link center'>
-          <Link onClick={handleOpenTermRuleDialog}>Terms of Service</Link>
-        </div>
-        <div className='rule-link center'>
-          <Link onClick={handleOpenPrivacyRuleDialog}>Privacy Policy</Link>
-        </div>
-        <FormControlLabel
-          className='rule-checkbox'
-          control={<Checkbox onChange={handleAcceptedRuleChange} color='primary' />}
-          label='Agree above rules'
-        />
-        {singUpError && (
-          <div className='margin8'>
-            <Alert severity='error'>{singUpError}</Alert>
-          </div>
-        )}
-        <Grid className='margin8'>
-          <div className='loading-wrapper'>
-            <Button variant='contained' color='primary' size='large' type='submit' disabled={!acceptedRule}>
+          </Grid>
+          <Grid item xs={12} css={StyleMargin4}>
+            <Link css={StylePointer} onClick={() => handlePrivacyRuleDialog(true)}>
+              Privacy Policy
+            </Link>
+          </Grid>
+          <FormControlLabel
+            className='rule-checkbox'
+            control={<Checkbox onChange={handleAcceptedRuleChange} color='primary' />}
+            label='Agree above rules'
+          />
+          {singUpError && (
+            <Alert css={StyleAlert} severity='error'>
+              {singUpError}
+            </Alert>
+          )}
+          <Grid item xs={12} css={StyleCicularWrapper}>
+            <Button css={StyleSubmitButton} variant='contained' color='primary' size='large' type='submit' disabled={!acceptedRule || submitLoading}>
               Register
             </Button>
-            {submitLoading && <CircularProgress className='loading' size={24} />}
-          </div>
+            {submitLoading && <CircularProgress css={StyleCicular} size={24} />}
+          </Grid>
         </Grid>
       </form>
-    </div>
+    </Container>
   );
 };
-
-export default SignUpPage;
