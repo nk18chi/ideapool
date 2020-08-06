@@ -166,5 +166,5 @@ export const words: string[] = [
   "Coaching",
   "Retro",
   "Education",
-  "Grobal",
+  "Global",
 ];
