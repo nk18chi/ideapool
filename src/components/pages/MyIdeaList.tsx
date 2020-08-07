@@ -1,5 +1,6 @@
 import React, { useState, useContext, Fragment } from "react";
-import { Typography, CircularProgress, Grid, Container, List, Divider, ListItem, ListItemText } from "@material-ui/core";
+import { Typography, Grid, Container, List, Divider, ListItem, ListItemText } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab/";
 import DetailIdea from "../modal/DetailIdea";
 import { IdeaContext } from "../../contexts/IdeaContext";
 import { TIdeaContext, TIdeaList } from "../../model/idea.model";
@@ -39,7 +40,31 @@ const MyIdeaList: React.FC = () => {
       </Typography>
       <Grid container direction='column' alignItems='center'>
         {ideaContext.loading ? (
-          <CircularProgress />
+          <List
+            css={css`
+              width: 100%;
+            `}
+          >
+            {Array(5)
+              .fill(1)
+              .map(() => (
+                <ListItem alignItems='flex-start'>
+                  <ListItemText
+                    primary={
+                      <h2 css={styledIdeaTitle}>
+                        <Skeleton />
+                      </h2>
+                    }
+                    secondary={
+                      <Typography component='span' variant='body2' color='textSecondary'>
+                        <Skeleton width='100%' />
+                        <Skeleton width='80%' />
+                      </Typography>
+                    }
+                  />
+                </ListItem>
+              ))}
+          </List>
         ) : ideaContext.ideas && ideaContext.ideas.length > 0 ? (
           <List>
             {ideaContext.ideas.map((idea: TIdeaList) => (
