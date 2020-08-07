@@ -32,7 +32,6 @@ const MyIdeaList: React.FC = () => {
   const [clickedIdea, setClickedIdea] = useState<string>("");
   const [openIdeaDetailDialog, setOpenIdeaDetailDialog] = useState<boolean>(false);
 
-  console.log(ideaContext);
   return (
     <Container maxWidth='md'>
       <Typography variant='h1' css={StyleMainTitle} align='center'>
