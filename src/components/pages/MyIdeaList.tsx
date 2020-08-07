@@ -2,18 +2,36 @@ import React, { useState, useContext, Fragment } from "react";
 import { Typography, CircularProgress, Grid, Container, List, Divider, ListItem, ListItemText } from "@material-ui/core";
 import DetailIdea from "../modal/DetailIdea";
 import { IdeaContext } from "../../contexts/IdeaContext";
-import { TIdeaContext } from "../../model/idea.model";
-import { jsx } from "@emotion/core";
+import { TIdeaContext, TIdeaList } from "../../model/idea.model";
+import { jsx, css } from "@emotion/core";
 import { StyleMainTitle } from "../style/Common.style";
 import { formatFirebaseDate, trimText } from "../../utils/functions";
 
 /** @jsx jsx */
+
+const styledIdeaTitle = css`
+  margin: 4px 0;
+  font-size: 20px;
+  font-weight: 600;
+`;
+
+const styledIdeaPrivateChip = css`
+  background-color: #ffd31d;
+  color: #fff;
+  padding: 7px;
+  font-size: 12px;
+  border-radius: 11px;
+  margin-right: 12px;
+  vertical-align: middle;
+  font-weight: 600;
+`;
 
 const MyIdeaList: React.FC = () => {
   const ideaContext = useContext<TIdeaContext>(IdeaContext);
   const [clickedIdea, setClickedIdea] = useState<string>("");
   const [openIdeaDetailDialog, setOpenIdeaDetailDialog] = useState<boolean>(false);
 
+  console.log(ideaContext);
   return (
     <Container maxWidth='md'>
       <Typography variant='h1' css={StyleMainTitle} align='center'>
@@ -24,18 +42,27 @@ const MyIdeaList: React.FC = () => {
           <CircularProgress />
         ) : ideaContext.ideas && ideaContext.ideas.length > 0 ? (
           <List>
-            {ideaContext.ideas.map((idea) => (
-              <Fragment key={idea.id}>
+            {ideaContext.ideas.map((idea: TIdeaList) => (
+              <Fragment key={idea.id!}>
                 <ListItem
                   button
                   alignItems='flex-start'
                   onClick={() => {
                     setOpenIdeaDetailDialog(true);
-                    setClickedIdea(idea.id);
+                    setClickedIdea(idea.id!);
                   }}
                 >
                   <ListItemText
-                    primary={idea.title}
+                    primary={
+                      <h2 css={styledIdeaTitle}>
+                        {idea.isPrivate && (
+                          <Typography css={styledIdeaPrivateChip} variant='button' component='span'>
+                            PRIVATE
+                          </Typography>
+                        )}
+                        {idea.title}
+                      </h2>
+                    }
                     secondary={
                       <React.Fragment>
                         <Typography component='span' variant='body2' color='textPrimary'>
@@ -49,7 +76,15 @@ const MyIdeaList: React.FC = () => {
                     }
                   />
                 </ListItem>
-                <Divider variant='inset' component='li' />
+                <Divider
+                  variant='inset'
+                  component='li'
+                  css={css`
+                     {
+                      margin-left: 0;
+                    }
+                  `}
+                />
               </Fragment>
             ))}
             <DetailIdea isOpen={openIdeaDetailDialog} handleOpenDialog={setOpenIdeaDetailDialog} ideaId={clickedIdea} />
