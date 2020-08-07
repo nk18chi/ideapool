@@ -13,7 +13,7 @@ const initialIdea: TIdeaDetail = {
   description: "",
   createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
   updatedAt: firebase.firestore.Timestamp.fromDate(new Date()),
-  isPrivate: false,
+  isPrivate: true,
   user: "",
 };
 
