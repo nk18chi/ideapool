@@ -16,6 +16,7 @@ export const getOwnIdeaList = (uid: string, success: (newData: TIdeaList[]) => v
           id: doc.id || "",
           title: data.title || "",
           description: data.description || "",
+          isPrivate: data.isPrivate !== undefined ? data.isPrivate : true,
           createdAt: data.createdAt,
           updatedAt: data.updatedAt,
         });
@@ -35,6 +36,7 @@ export const getIdeaDetail = (id: string): Promise<TIdeaDetail> => {
           id: doc.id || "",
           title: (data && data.title) || "",
           description: (data && data.description) || "",
+          isPrivate: data && data.isPrivate !== undefined ? data.isPrivate : true,
           user: (data && data.user) || "",
           createdAt: data && data.createdAt,
           updatedAt: data && data.updatedAt,

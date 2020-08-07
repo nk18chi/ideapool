@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TextField, Dialog, DialogTitle, DialogContent, DialogActions, Button } from "@material-ui/core";
+import { TextField, Dialog, DialogTitle, DialogContent, DialogActions, Button, Switch, FormControlLabel } from "@material-ui/core";
 import BackDrop from "../common/BackDrop";
 import SnackBar from "../common/SnackBar";
 import { TIdeaDetail } from "../../model/idea.model";
@@ -8,12 +8,12 @@ import { addNewIdea } from "../../firebase/ideas";
 import { TAddIdea } from "../../model/component.model";
 import * as firebase from "firebase";
 
-const initialIdea = {
-  id: "",
+const initialIdea: TIdeaDetail = {
   title: "",
   description: "",
   createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
   updatedAt: firebase.firestore.Timestamp.fromDate(new Date()),
+  isPrivate: false,
   user: "",
 };
 
@@ -59,6 +59,18 @@ const AddIdea: React.FC<TAddIdea> = ({ isOpen, handleOpenDialog }) => {
             rows={6}
             autoComplete='off'
             fullWidth
+          />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={newIdea.isPrivate}
+                onChange={(e) => setNewIdea((prev) => ({ ...prev, isPrivate: e.target.checked }))}
+                color='primary'
+                name='checkedB'
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+            }
+            label='private'
           />
         </DialogContent>
         <DialogActions>

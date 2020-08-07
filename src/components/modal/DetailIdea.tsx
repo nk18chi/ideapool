@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TextField, Dialog, DialogContent, DialogActions, Button, DialogContentText } from "@material-ui/core";
+import { TextField, Dialog, DialogContent, DialogActions, Button, DialogContentText, Switch, FormControlLabel } from "@material-ui/core";
 import BackDrop from "../common/BackDrop";
 import SnackBar from "../common/SnackBar";
 import { TIdeaDetail } from "../../model/idea.model";
@@ -82,6 +82,18 @@ const DetailIdea: React.FC<TDetailIdea> = ({ isOpen, handleOpenDialog, ideaId })
                     fullWidth
                   />
                 </DialogContentText>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={idea.isPrivate}
+                      onChange={(e) => setIdea({ ...idea, isPrivate: e.target.checked })}
+                      color='primary'
+                      name='checkedB'
+                      inputProps={{ "aria-label": "primary checkbox" }}
+                    />
+                  }
+                  label='private'
+                />
               </DialogContent>
               <DialogActions style={{ display: "block" }}>
                 <Button variant='contained' onClick={handleDeleteIdea} color='secondary'>

@@ -6,18 +6,14 @@ export type TIdeaContext = {
 };
 
 export type TIdeaList = {
-  id: string;
+  id?: string;
   title: string;
   description: string;
+  isPrivate: boolean;
   createdAt: firebase.firestore.Timestamp;
   updatedAt: firebase.firestore.Timestamp;
 };
 
-export type TIdeaDetail = {
-  id: string;
-  title: string;
-  description: string;
-  createdAt: firebase.firestore.Timestamp;
-  updatedAt: firebase.firestore.Timestamp;
+export type TIdeaDetail = TIdeaList & {
   user: string;
 };
