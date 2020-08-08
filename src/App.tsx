@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { TopPage } from "./components/pages/TopPage";
 import { SignUpPage } from "./components/pages/SignUpPage";
 import { LoginPage } from "./components/pages/LoginPage";
+import { DiscussPage } from "./components/pages/DiscussPage";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import PrivacyPage from "./components/pages/static/PrivacyPage";
@@ -15,6 +16,7 @@ import { GlobalStyles } from "./components/style/GlobalStyles";
 import { StylesProvider } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { ForgetPasswordPage } from "./components/pages/ForgetPasswordPage";
+import { IdeaDetailPage } from "./components/pages/IdeaDetailPage";
 
 const App: FC = () => {
   return (
@@ -37,6 +39,8 @@ const App: FC = () => {
                       <Route exact path='/privacy' component={PrivacyPage} />
                       <Route exact path='/term' component={TermPage} />
                       <Route exact path='/forget_password' component={ForgetPasswordPage} />
+                      <Route exact path='/discuss' component={DiscussPage} />
+                      <Route exact path='/discuss/:ideaId' component={IdeaDetailPage} />
                     </Switch>
                   </Route>
                 </Switch>

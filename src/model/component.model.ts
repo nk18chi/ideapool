@@ -1,3 +1,5 @@
+import { RouteComponentProps } from "react-router";
+
 export type TSnacBar = {
   showSnackBar: boolean;
   setShowSnackBar: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,3 +16,5 @@ export type TDetailIdea = {
   handleOpenDialog: React.Dispatch<React.SetStateAction<boolean>>;
   ideaId: string;
 };
+
+export type TMatchProps = RouteComponentProps<{ ideaId: string }>;

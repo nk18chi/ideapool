@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Link, AppBar, Toolbar, IconButton, Typography, Menu, MenuItem } from "@material-ui/core";
-import { Add, AccountCircle, Highlight, List } from "@material-ui/icons";
+import { Add, AccountCircle, Highlight, List, Forum } from "@material-ui/icons";
 import AddIdea from "./modal/AddIdea";
 import { FirebaseContext } from "../contexts/FirebaseContext";
 import { jsx, css } from "@emotion/core";
@@ -54,6 +54,7 @@ const Header: React.FC = () => {
     color: ${Color.MainColor};
     font-weight: 800;
     font-size: 24px;
+    margin-right: 12px;
     &:hover {
       text-decoration: none;
     }
@@ -77,6 +78,10 @@ const Header: React.FC = () => {
     &:hover {
       background-color: ${Color.MainColor};
     }
+  `;
+
+  const StyleIcon = css`
+    margin-right: 4px;
   `;
 
   const renderMenu = (
@@ -105,6 +110,7 @@ const Header: React.FC = () => {
               ideapool
             </Link>
           </Typography>
+
           <div
             css={css`
               flex-grow: 1;
@@ -113,38 +119,50 @@ const Header: React.FC = () => {
 
           {user.loading ? (
             <React.Fragment></React.Fragment>
-          ) : user.uid ? (
-            <React.Fragment>
-              <div>
-                <IconButton color='inherit' css={StyleHeaderText} onClick={() => setOpenAddIdeaForm(true)}>
-                  <Add />
-                  add idea
-                </IconButton>
-              </div>
-              <div>
-                <IconButton color='inherit' css={StyleHeaderText} component={RouterLink} to='/my_ideas'>
-                  <List />
-                  my ideas
-                </IconButton>
-              </div>
-              <div>
-                <IconButton edge='end' onClick={handleProfileMenuOpen} color='inherit'>
-                  <AccountCircle />
-                </IconButton>
-              </div>
-            </React.Fragment>
           ) : (
             <React.Fragment>
               <div>
-                <IconButton color='inherit' css={StyleHeaderText} component={RouterLink} to='/login'>
-                  Login
-                </IconButton>
+                <Link component={RouterLink} to='/discuss'>
+                  <IconButton color='inherit' css={StyleHeaderText}>
+                    <Forum css={StyleIcon} />
+                    discuss
+                  </IconButton>
+                </Link>
               </div>
-              <div>
-                <IconButton css={StyleSignUpButton} component={RouterLink} to='/signup'>
-                  Sign up
-                </IconButton>
-              </div>
+              {user.uid ? (
+                <React.Fragment>
+                  <div>
+                    <IconButton color='inherit' css={StyleHeaderText} onClick={() => setOpenAddIdeaForm(true)}>
+                      <Add css={StyleIcon} />
+                      add idea
+                    </IconButton>
+                  </div>
+                  <div>
+                    <IconButton color='inherit' css={StyleHeaderText} component={RouterLink} to='/my_ideas'>
+                      <List css={StyleIcon} />
+                      my ideas
+                    </IconButton>
+                  </div>
+                  <div>
+                    <IconButton edge='end' onClick={handleProfileMenuOpen} color='inherit'>
+                      <AccountCircle />
+                    </IconButton>
+                  </div>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <div>
+                    <IconButton color='inherit' css={StyleHeaderText} component={RouterLink} to='/login'>
+                      Login
+                    </IconButton>
+                  </div>
+                  <div>
+                    <IconButton css={StyleSignUpButton} component={RouterLink} to='/signup'>
+                      Sign up
+                    </IconButton>
+                  </div>
+                </React.Fragment>
+              )}
             </React.Fragment>
           )}
         </Toolbar>

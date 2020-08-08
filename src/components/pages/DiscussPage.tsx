@@ -1,12 +1,12 @@
-import React, { useState, useContext, Fragment } from "react";
+import React, { useState, useEffect, Fragment } from "react";
+import { Link as RouterLink } from "react-router-dom";
 import { Typography, Grid, Container, List, Divider, ListItem, ListItemText } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab/";
-import DetailIdea from "../modal/DetailIdea";
-import { IdeaContext } from "../../contexts/IdeaContext";
-import { TIdeaContext, TIdeaList } from "../../model/idea.model";
+import { TIdeaList } from "../../model/idea.model";
 import { jsx, css } from "@emotion/core";
 import { StyleMainTitle } from "../style/Common.style";
 import { formatFirebaseDate, trimText } from "../../utils/functions";
+import { getLatestIdeaList } from "../../firebase/ideas";
 
 /** @jsx jsx */
 
@@ -27,18 +27,24 @@ const styledIdeaPrivateChip = css`
   font-weight: 600;
 `;
 
-const MyIdeaList: React.FC = () => {
-  const ideaContext = useContext<TIdeaContext>(IdeaContext);
-  const [clickedIdea, setClickedIdea] = useState<string>("");
-  const [openIdeaDetailDialog, setOpenIdeaDetailDialog] = useState<boolean>(false);
+export const DiscussPage: React.FC = () => {
+  const [ideas, setIdeas] = useState<TIdeaList[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    getLatestIdeaList().then((res) => {
+      setIdeas(res);
+      setLoading(false);
+    });
+  }, []);
 
   return (
     <Container maxWidth='md'>
       <Typography variant='h1' css={StyleMainTitle} align='center'>
-        My Idea List
+        Dicuss
       </Typography>
       <Grid container direction='column' alignItems='center'>
-        {ideaContext.loading ? (
+        {loading ? (
           <List
             css={css`
               width: 100%;
@@ -46,8 +52,8 @@ const MyIdeaList: React.FC = () => {
           >
             {Array(5)
               .fill(1)
-              .map(() => (
-                <ListItem alignItems='flex-start'>
+              .map((_, i) => (
+                <ListItem key={i} alignItems='flex-start'>
                   <ListItemText
                     primary={
                       <h2 css={styledIdeaTitle}>
@@ -64,22 +70,15 @@ const MyIdeaList: React.FC = () => {
                 </ListItem>
               ))}
           </List>
-        ) : ideaContext.ideas && ideaContext.ideas.length > 0 ? (
+        ) : ideas && ideas.length > 0 ? (
           <List
             css={css`
               width: 100%;
             `}
           >
-            {ideaContext.ideas.map((idea: TIdeaList) => (
+            {ideas.map((idea: TIdeaList) => (
               <Fragment key={idea.id!}>
-                <ListItem
-                  button
-                  alignItems='flex-start'
-                  onClick={() => {
-                    setOpenIdeaDetailDialog(true);
-                    setClickedIdea(idea.id!);
-                  }}
-                >
+                <ListItem button alignItems='flex-start' component={RouterLink} to={`/discuss/${idea.id}`}>
                   <ListItemText
                     primary={
                       <h2 css={styledIdeaTitle}>
@@ -115,16 +114,13 @@ const MyIdeaList: React.FC = () => {
                 />
               </Fragment>
             ))}
-            <DetailIdea isOpen={openIdeaDetailDialog} handleOpenDialog={setOpenIdeaDetailDialog} ideaId={clickedIdea} />
           </List>
         ) : (
           <Typography component='p' variant='h6' gutterBottom color='textSecondary'>
-            You haven't added ideas yet.
+            We don't have any ideas...
           </Typography>
         )}
       </Grid>
     </Container>
   );
 };
-
-export default MyIdeaList;

@@ -4,6 +4,7 @@ import { TIdeaDetail, TIdeaList } from "../model/idea.model";
 
 const ref = database.collection("ideas");
 
+// using onSnapshot to keep updating the data so that this return is not Promise.
 export const getOwnIdeaList = (uid: string, success: (newData: TIdeaList[]) => void) => {
   ref
     .where("user", "==", uid)
@@ -23,6 +24,34 @@ export const getOwnIdeaList = (uid: string, success: (newData: TIdeaList[]) => v
       });
       success(newData);
     });
+};
+
+export const getLatestIdeaList = (): Promise<TIdeaList[]> => {
+  return new Promise((resolve, reject) => {
+    ref
+      .where("isPrivate", "==", false)
+      .orderBy("createdAt", "desc")
+      .get()
+      .then((snap) => {
+        const newData: TIdeaList[] = [];
+        snap.forEach((doc) => {
+          const data = doc.data();
+          newData.push({
+            id: doc.id || "",
+            title: data.title || "",
+            description: data.description || "",
+            isPrivate: data.isPrivate !== undefined ? data.isPrivate : true,
+            createdAt: data.createdAt,
+            updatedAt: data.updatedAt,
+          });
+        });
+        resolve(newData);
+      })
+      .catch((error) => {
+        console.error("Error fetching the latest idea list: ", error);
+        reject();
+      });
+  });
 };
 
 export const getIdeaDetail = (id: string): Promise<TIdeaDetail> => {
