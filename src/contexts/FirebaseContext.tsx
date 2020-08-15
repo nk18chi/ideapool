@@ -7,14 +7,15 @@ type TFirebaseContext = {
   auth: firebase.auth.Auth;
 };
 
-const initalUser = { uid: null, loading: true, isAdmin: false };
+const initalUser = { uid: null, displayName: null, loading: true, isAdmin: false };
 export const FirebaseContext = createContext<TFirebaseContext>({ user: initalUser, auth: auth });
 
+// TODO: rename this file to "userContext"
 const FirebaseContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<TUser>(initalUser);
 
   useEffect(() => {
-    setUser({ uid: null, loading: true, isAdmin: false });
+    setUser(initalUser);
     const unsubscribe = auth.onAuthStateChanged(async (usr) => {
       if (usr && usr.emailVerified) {
         let isAdmin = false;
@@ -23,9 +24,9 @@ const FirebaseContextProvider: React.FC<{ children: React.ReactNode }> = ({ chil
             isAdmin = true;
           }
         });
-        setUser({ uid: usr.uid, loading: false, isAdmin: isAdmin });
+        setUser({ uid: usr.uid, displayName: usr.displayName, loading: false, isAdmin: isAdmin });
       } else {
-        setUser({ uid: null, loading: false, isAdmin: false });
+        setUser({ ...initalUser, loading: false });
       }
     });
     return () => unsubscribe();
