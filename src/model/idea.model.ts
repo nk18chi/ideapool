@@ -17,3 +17,14 @@ export type TIdeaList = {
 export type TIdeaDetail = TIdeaList & {
   user: string;
 };
+
+export type TComment = {
+  id?: string;
+  description: string;
+  createdAt: firebase.firestore.Timestamp;
+  updatedAt: firebase.firestore.Timestamp;
+  user: {
+    uid: string;
+    displayName: string;
+  };
+};

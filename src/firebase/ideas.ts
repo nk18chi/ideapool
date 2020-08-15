@@ -1,6 +1,6 @@
 import { database } from "./firebase";
 import * as firebase from "firebase/app";
-import { TIdeaDetail, TIdeaList } from "../model/idea.model";
+import { TIdeaDetail, TIdeaList, TComment } from "../model/idea.model";
 
 const ref = database.collection("ideas");
 
@@ -125,4 +125,45 @@ export const deleteIdea = (id: string): Promise<null> => {
         reject();
       });
   });
+};
+
+export const addCommentForIdea = (ideaId: string, comment: TComment): Promise<null> => {
+  return new Promise((resolve, reject) => {
+    ref
+      .doc(ideaId)
+      .collection("comments")
+      .add({
+        ...comment,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      })
+      .then(() => {
+        resolve();
+      })
+      .catch((error) => {
+        console.error("Error adding a new idea: ", error);
+        reject();
+      });
+  });
+};
+
+export const getLatestCommentsForIdea = (ideaId: string, success: (newData: TComment[]) => void) => {
+  ref
+    .doc(ideaId)
+    .collection("comments")
+    .orderBy("createdAt", "desc")
+    .onSnapshot((snap) => {
+      const newData: TComment[] = [];
+      snap.forEach((doc) => {
+        const data = doc.data();
+        newData.push({
+          id: doc.id,
+          description: data.description,
+          createdAt: data.createdAt,
+          updatedAt: data.updatedAt,
+          user: data.user,
+        });
+      });
+      success(newData);
+    });
 };
