@@ -22,8 +22,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+#env
+.env
+
 # firebase
 .firebase
 /.firebaserc
 database.rules.json
 firebase.json
+/src/firebase/config.ts
