@@ -24,7 +24,7 @@ import { Skeleton } from "@material-ui/lab/";
 import { Color } from "../style/Color";
 import * as firebase from "firebase";
 import { FirebaseContext } from "../../contexts/FirebaseContext";
-import { formatFirebaseDate } from "../../utils/functions";
+import { formatFirebaseDate } from "../../utils/common.functions";
 
 /** @jsx jsx */
 

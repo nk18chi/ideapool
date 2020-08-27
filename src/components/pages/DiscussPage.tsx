@@ -5,7 +5,7 @@ import { Skeleton } from "@material-ui/lab/";
 import { TIdeaList } from "../../model/idea.model";
 import { jsx, css } from "@emotion/core";
 import { StyleMainTitle } from "../style/Common.style";
-import { formatFirebaseDate, trimText } from "../../utils/functions";
+import { formatFirebaseDate, trimText } from "../../utils/common.functions";
 import { getLatestIdeaList } from "../../firebase/ideas";
 
 /** @jsx jsx */
