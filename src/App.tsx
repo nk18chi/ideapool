@@ -17,38 +17,41 @@ import { StylesProvider } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { ForgetPasswordPage } from "./components/pages/ForgetPasswordPage";
 import { IdeaDetailPage } from "./components/pages/IdeaDetailPage";
+import ProductsContextProvider from "./contexts/productContext";
 
 const App: FC = () => {
   return (
     <FirebaseContextProvider>
       <IdeaContextProvider>
-        <Router>
-          <StylesProvider injectFirst>
-            <GlobalStyles />
-            <div className='App'>
-              <Header />
-              <Container maxWidth='md'>
-                <Switch>
-                  <Route path='/'>
-                    <Switch>
-                      <Route exact path='/' component={TopPage} />
-                      <Route exact path='/add' component={AddIdea} />
-                      <Route exact path='/my_ideas' component={MyIdeaList} />
-                      <Route exact path='/login' component={LoginPage} />
-                      <Route exact path='/signup' component={SignUpPage} />
-                      <Route exact path='/privacy' component={PrivacyPage} />
-                      <Route exact path='/term' component={TermPage} />
-                      <Route exact path='/forget_password' component={ForgetPasswordPage} />
-                      <Route exact path='/discuss' component={DiscussPage} />
-                      <Route exact path='/discuss/:ideaId' component={IdeaDetailPage} />
-                    </Switch>
-                  </Route>
-                </Switch>
-              </Container>
-              <Footer />
-            </div>
-          </StylesProvider>
-        </Router>
+        <ProductsContextProvider>
+          <Router>
+            <StylesProvider injectFirst>
+              <GlobalStyles />
+              <div className='App'>
+                <Header />
+                <Container maxWidth='md'>
+                  <Switch>
+                    <Route path='/'>
+                      <Switch>
+                        <Route exact path='/' component={TopPage} />
+                        <Route exact path='/add' component={AddIdea} />
+                        <Route exact path='/my_ideas' component={MyIdeaList} />
+                        <Route exact path='/login' component={LoginPage} />
+                        <Route exact path='/signup' component={SignUpPage} />
+                        <Route exact path='/privacy' component={PrivacyPage} />
+                        <Route exact path='/term' component={TermPage} />
+                        <Route exact path='/forget_password' component={ForgetPasswordPage} />
+                        <Route exact path='/discuss' component={DiscussPage} />
+                        <Route exact path='/discuss/:ideaId' component={IdeaDetailPage} />
+                      </Switch>
+                    </Route>
+                  </Switch>
+                </Container>
+                <Footer />
+              </div>
+            </StylesProvider>
+          </Router>
+        </ProductsContextProvider>
       </IdeaContextProvider>
     </FirebaseContextProvider>
   );
