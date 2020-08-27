@@ -75,7 +75,7 @@ export const WebsiteTabPanel = () => {
   return (
     <Fragment>
       <Typography variant='h6' gutterBottom align='center'>
-        associates with a new idea by combining a website and a word.
+        associates with a new idea by combining websites.
       </Typography>
       <Typography variant='subtitle1' gutterBottom align='center'>
         ex.){" "}
