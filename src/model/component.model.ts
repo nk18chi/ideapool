@@ -17,4 +17,15 @@ export type TDetailIdea = {
   ideaId: string;
 };
 
+export type TGreenSwitch = {
+  index: number
+  value: boolean;
+  handleSwitchChange: any;
+};
+
 export type TMatchProps = RouteComponentProps<{ ideaId: string }>;
+
+export type TWordSlot = {
+  text: string;
+  isFixed: boolean;
+};
