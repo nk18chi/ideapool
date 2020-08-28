@@ -14,6 +14,7 @@ const StyleComponent = css`
 
 const StyleCardContainer = css`
   background-color: #eee;
+  display: flex;
 `;
 
 const StyleCard = css`
