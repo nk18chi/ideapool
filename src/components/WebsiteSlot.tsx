@@ -19,6 +19,7 @@ const StyleCardContainer = css`
 
 const StyleCard = css`
   margin: 4px;
+  width: 100%;
 `;
 
 const StyleCardMedia = css`
